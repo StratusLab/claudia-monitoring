@@ -1,6 +1,18 @@
-hola
-
- mundo
-
-y adios
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.telefonica.tcloud</groupId>
+  <artifactId>basicmonitoring</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>basicmonitoring</name>
+    <dependencies></dependencies>
+  <modules>
+      <module>collectorinterfaces</module>
+      <module>mysql_monpersistence</module>
+      <module>registerfqn4monitoring_ws</module>
+      <module>db_collectd2fqn</module>
+      <module>collectd-api</module>
+      <module>collectd-claudia</module>
+  </modules>
+</project>

@@ -1,0 +1,3 @@
+load.shortterm:loadAverageLastMinute:processes
+load.midterm:loadAverageLast5Minutes:processes
+load.longterm:loadAverageLast15Minutes:processes

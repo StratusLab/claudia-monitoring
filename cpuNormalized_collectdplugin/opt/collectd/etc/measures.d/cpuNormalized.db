@@ -1,0 +1,5 @@
+cpuNormalizedGauge-idle.value:cpuIdlePPU:parts per unit
+cpuNormalizedGauge-nice.value:cpuNicePPU:parts per unit
+cpuNormalizedGauge-idleOrNice.value:cpuIdleOrNicePPU:parts per unit
+#cpuNormalizedGauge-iowait.value:cpuIOWaitPPU:parts per unit
+

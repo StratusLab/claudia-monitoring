@@ -1,0 +1,1 @@
+tar czvf bindist.tgz --exclude "/opt/collectd/var/lib/collectd/csv" --exclude "/opt/collectd/var/lib/collectd/rrd" /opt/collectd /etc/init.d/collectd /root/database/ /root/test_subscribe.jar /root/install_colector.sh /root/create_bindist.sh /root/ssh.py /var/lib/jetty/webapps/silbops.war 

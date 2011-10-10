@@ -1,0 +1,9 @@
+pg_db_size.value:pgDatabaseSize:bytes
+pg_numbackends.value:pgDatabaseClients:clients
+pg_xact-commit.value:pgTxactCommit:commits
+pg_xact-rollback.value:pgTxactRollback:rollbacks
+pg_n_tup_c-ins.value:pgInserts:inserts
+pg_n_tup_c-upd.value:pgUpdates:updates
+pg_n_tup_c-del.value:pgDeletes:deletes
+
+

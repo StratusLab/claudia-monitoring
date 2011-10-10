@@ -1,0 +1,1 @@
+tar czvf bindist.tgz --exclude "/opt/collectd/var/lib/collectd/csv" --exclude "/opt/collectd/var/lib/collectd/rrd" /opt/collectd /etc/init.d/collectd /root/install_agent.sh /root/create_bindist.sh /root/ssh.py 
