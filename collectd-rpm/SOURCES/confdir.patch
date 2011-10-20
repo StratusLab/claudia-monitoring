@@ -1,0 +1,7 @@
+--- src/collectd.conf.in.orig	2011-10-18 11:50:19.611423192 +0200
++++ src/collectd.conf.in	2011-10-18 11:50:45.630298239 +0200
+@@ -1046,3 +1046,4 @@
+ #    </Type>
+ #  </Host>
+ #</Plugin>
++Include "/opt/collectd/etc/conf.d"
