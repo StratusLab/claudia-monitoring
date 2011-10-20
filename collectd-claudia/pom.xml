@@ -22,7 +22,7 @@
     <dependency>
       <groupId>org.collectd</groupId>
       <artifactId>collectd-api</artifactId>
-      <version>5.0</version>
+      <version>5.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.telefonica.tcloud</groupId>
