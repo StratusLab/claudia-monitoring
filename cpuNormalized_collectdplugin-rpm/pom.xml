@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>eu.stratuslab.pkgs.claudia</groupId>
+	<artifactId>cpuNormalized_collectdplugin-rpm</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>Report cpu Normalized plugin RPM Package</name>
+	<packaging>rpm</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<extensions>true</extensions>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>attached-rpm</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<copyright>2011, NoBody</copyright>
+					<group>Development</group>
+					<description>Maven Recipe: RPM Package.</description>
+
+					<release>${RELEASE}</release>
+					<prefix>/opt/collectd</prefix>
+
+					<mappings>
+						<mapping>
+							<directory>/etc/conf.d</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>${cpunormalized_collectd.base}${opt.collectd.base}/etc/conf.d</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/lib</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>${cpunormalized_collectd.base}/${opt.collectd.base}/lib</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/share</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>${cpunormalized_collectd.base}${opt.collectd.base}/share</location>
+								</source>
+							</sources>
+						</mapping>
+					</mappings>
+					 <preinstallScriptlet> 
+					 	<script> 
+OLD_CNF=$RPM_INSTALL_PREFIX/etc/conf.d/cpuNormalized.conf
+SAVE_CNF=$RPM_INSTALL_PREFIX/etc/conf.d/cpuNormalized.conf.old
+
+[ -e $OLD_CNF ] &amp;&amp; mv  $OLD_CNF $SAVE_CNF
+
+echo ""
+						</script>
+					 </preinstallScriptlet> 
+					 <postinstallScriptlet> 
+					 	<script>
+CNF=$RPM_INSTALL_PREFIX/etc/conf.d/cpuNormalized.conf
+OLD_CNF=$RPM_INSTALL_PREFIX/etc/conf.d/cpuNormalized.conf.old
+INST_CNF=$RPM_INSTALL_PREFIX/etc/conf.d/cpuNormalized.conf.inst
+
+[ -e $OLD_CNF ] &amp;&amp; mv $CNF $INST_CNF &amp;&amp; mv $OLD_CNF $CNF
+
+echo ""
+
+						</script>
+					 </postinstallScriptlet>
+
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<cpunormalized_collectd.base>../cpuNormalized_collectdplugin</cpunormalized_collectd.base>
+		<opt.collectd.base>/opt/collectd</opt.collectd.base>
+    <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
+    <RELEASE>0.${maven.build.timestamp}</RELEASE>
+	</properties>
+
+</project>
