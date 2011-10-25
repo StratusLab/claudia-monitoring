@@ -23,17 +23,12 @@
 		<artifactId>db_collectd2fqn</artifactId> 
 		<version>1.0-SNAPSHOT</version>
 		<!--
-		<classifier>environment</classifier> 
 		-->
-		<type>jar</type>
 	</dependency>
 	<dependency> 
-		<groupId>com.telefonica.tcloud</groupId> 
-		<artifactId>mysql_monpersistence</artifactId> 
+		<groupId>com.telefonica.tcloud</groupId>
+  		<artifactId>mysql_monpersistence</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<type>zip</type>
-		<clasifier>environment</clasifier>
-
 	</dependency>
 	</dependencies>
 
@@ -53,7 +48,8 @@
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-dependency-plugin</artifactId> 
 			
-			<executions> 
+			<executions><!-- krt por aqui... --> 
+
 			<execution> 
 				<id>copy</id> 
 				<goals> <goal>copy</goal> </goals>
@@ -68,8 +64,9 @@
 					<artifactItem> 
 					 	<groupId>com.telefonica.tcloud</groupId> 
 						<artifactId>mysql_monpersistence</artifactId> 
-						<version>1.0-SNAPSHOT-jar-with-dependencies</version>
-						<type>jar</type>
+						<version>1.0-SNAPSHOT</version> 
+						<classifier>jar-with-dependencies</classifier>
+						<type>jar</type> 
 					</artifactItem> 
 					</artifactItems> 
 				</configuration> 
