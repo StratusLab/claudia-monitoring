@@ -1,0 +1,6 @@
+vmpage_faults.minflt:pageFaultsMinor:page faults
+vmpage_faults.majflt:pageFaultsMajor:page faults
+vmpage_io-memory.in:pagesIn:pages
+vmpage_io-memory.out:pagesOut:pages
+vmpage_io-swap.in:swapIn:pages
+vmpage_io-swap.out:swapOut:pages

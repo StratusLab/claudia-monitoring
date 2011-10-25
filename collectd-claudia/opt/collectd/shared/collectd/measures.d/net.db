@@ -1,0 +1,6 @@
+if_errors.rx:netRxErrors:reception errors
+if_errors.tx:netTxErrors:transmission errors
+if_octets.rx:netRxOctects:bytes
+if_octets.tx:netTxOctects:bytes
+if_packets.rx:netRxPackets:packets
+if_packets.tx:netTxPackets:packets

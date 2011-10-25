@@ -1,0 +1,4 @@
+memory-free.value:memoryFree:bytes
+memory-used.value:memoryUsed:bytes
+memory-cached.value:memoryCached:bytes
+memory-buffered.value:memoryBuffered:bytes
