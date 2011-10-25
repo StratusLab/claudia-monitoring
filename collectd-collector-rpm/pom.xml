@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>eu.stratuslab.pkgs.claudia</groupId>
+	<artifactId>collectd-collector-rpm</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>collectd collector rpm package</name>
+	<!--
+	<packaging>rpm</packaging> 
+	-->
+	
+	<parent> 
+		<groupId>com.telefonica.tcloud</groupId> 
+		<artifactId>basicmonitoring</artifactId> 
+		<version>1.0-SNAPSHOT</version> 
+	</parent>
+
+<!-- DEPENDENCIAS -->
+	<dependencies> 
+	<dependency> 
+		<groupId>com.telefonica.tcloud</groupId> 
+		<artifactId>db_collectd2fqn</artifactId> 
+		<version>1.0-SNAPSHOT</version>
+		<!--
+		<classifier>environment</classifier> 
+		-->
+		<type>jar</type>
+	</dependency>
+	<dependency> 
+		<groupId>com.telefonica.tcloud</groupId> 
+		<artifactId>mysql_monpersistence</artifactId> 
+		<version>1.0-SNAPSHOT</version>
+		<type>zip</type>
+		<clasifier>environment</clasifier>
+
+	</dependency>
+	</dependencies>
+
+<!-- FIN DEPENDENCIAS -->
+	<build>
+		<plugins>
+
+		<plugin> 
+			<groupId>org.apache.maven.plugins</groupId> 
+			<artifactId>maven-resources-plugin</artifactId> 
+			<configuration> 
+				<encoding>UTF-8</encoding> 
+			</configuration>
+		</plugin>
+
+		<plugin> 
+			<groupId>org.apache.maven.plugins</groupId> 
+			<artifactId>maven-dependency-plugin</artifactId> 
+			
+			<executions> 
+			<execution> 
+				<id>copy</id> 
+				<goals> <goal>copy</goal> </goals>
+				<configuration> 
+					<artifactItems> 
+					<artifactItem> 
+						<groupId>com.telefonica.tcloud</groupId> 
+						<artifactId>db_collectd2fqn</artifactId> 
+						<version>1.0-SNAPSHOT</version>
+						<type>jar</type>
+					</artifactItem> 
+					<artifactItem> 
+					 	<groupId>com.telefonica.tcloud</groupId> 
+						<artifactId>mysql_monpersistence</artifactId> 
+						<version>1.0-SNAPSHOT-jar-with-dependencies</version>
+						<type>jar</type>
+					</artifactItem> 
+					</artifactItems> 
+				</configuration> 
+			</execution>
+			</executions>
+		</plugin>
+
+
+		<plugin> 
+			<groupId>org.codehaus.mojo</groupId> 
+			<artifactId>rpm-maven-plugin</artifactId> 
+			<extensions>true</extensions>
+			
+			<executions> 
+			<execution> 
+				<goals> 
+				<goal>attached-rpm</goal> 
+				</goals> 
+			</execution> 
+			</executions>
+
+			<configuration> 
+				<copyright>2011, NoBody</copyright> 
+				<group>Development</group> 
+				<description>Maven Recipe: RPM Package.</description> 
+				<release>${RELEASE}</release> 
+				<prefix>/opt/collectd</prefix> 
+				<mappings> 
+				<mapping> 
+					<directory>${app.home}/share/collectd/java/</directory> 
+					<filemode>644</filemode> 
+					<username>root</username> 
+					<groupname>root</groupname> 
+					<sources> 
+						<source> 
+						<location>target/dependency/db_collectd2fqn-1.0-SNAPSHOT.jar</location> 
+						<destination>db_collectd2fqn.jar</destination> 
+						</source> 
+					</sources>
+				</mapping> 
+				<mapping> 
+					<directory>${app.home}/share/collectd/java/</directory> 
+					<filemode>644</filemode> 
+					<username>root</username> 
+					<groupname>root</groupname> 
+					<sources> 
+						<source> 
+						<location>target/dependency/mysql_monpersistence-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
+						<destination>mysql_monpersistence.jar</destination> 
+						</source> 
+					</sources>
+				</mapping> 
+				</mappings>
+			</configuration> 
+		</plugin>
+	
+		</plugins>
+	</build> 
+	<properties>
+		<app.home>/opt/collectd</app.home>
+		<rpm.release>1</rpm.release>
+		<maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
+		<RELEASE>0.${maven.build.timestamp}</RELEASE>
+	</properties>
+
+</project>
