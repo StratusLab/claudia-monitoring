@@ -1,4 +1,5 @@
 %define _unpackaged_files_terminate_build 0
+%define AutoReqProv false
 Name:		collectd
 Version:	5.0.1
 Release:	1%{?dist}
@@ -15,34 +16,23 @@ BuildRequires:	perl-ExtUtils-MakeMaker, python-devel
 
 %description
 
-%package common
+%package base
 Summary:  collectd monitoring solution. Common files
 %package basicprobes
 Summary:  collectd monitoring solution. Basic probes
-Requires: collectd-common
-%package client
-Summary:  collectd monitoring solution. Client package
-Requires: basicprobes
-%package server
-Summary:  collectd monitoring solution. Server package
+Requires: collectd-base
 %package java
 Summary: collectd monitoring solution. Java bindings package
-Requires: collectd-common
+Requires: collectd-base
 
-%description common
-This package contains a basic installation of collectd monitoring solution, common to server (collector) and client (probes) sides.
+%description base
+This package contains a basic installation of collectd monitoring solution, base to server (collector) and client (probes) sides.
 
 %description basicprobes 
 This package contains a basic of probes that are part of collectd monitoring solution.
 
 %description java
 This package contains the binding to support collectd plugins in Java.
-
-%description client
-A basic installation of a collectd with the role of client running the probes and sending the results to another collectd with the server role.
-
-%description server
-A basic installation of a collectd runnnig as server that receives probes of other machines running collectd.
 
 %prep
 %setup 
@@ -97,22 +87,6 @@ LoadPlugin vmem
         DeleteSocket false
 </Plugin>
 EOF
-cat > network-client.conf <<EOF
-Loadplugin network
-<Plugin network>
-        <Server "collectorserver" "25827">
-#                Interface "eth0"
-        </Server>
-</Plugin>
-EOF
-cat > network-server.conf <<EOF
-Loadplugin network
-<Plugin network>
-        <Listen "0.0.0.0" "25826">
-                Interface "eth0"
-        </Listen>
-</Plugin>
-EOF
 cat > collectdinitd <<EOF
 #!/bin/bash
 #
@@ -131,7 +105,6 @@ cat > collectdinitd <<EOF
 # X-Interactive:     true
 # Short-Description: Start/stop collectd monitoring
 ### END INIT INFO
-
 
 
 #
@@ -179,8 +152,6 @@ install -d $RPM_BUILD_ROOT/etc/init.d
 mv $RPM_BUILD_ROOT/opt/collectd/etc/collectd.conf $RPM_BUILD_ROOT/opt/collectd/etc/collectd.conf.sample
 cp collectd.conf $RPM_BUILD_ROOT/opt/collectd/etc/collectd.conf
 cp basicprobes.conf $RPM_BUILD_ROOT/opt/collectd/etc/conf.d
-cp network-client.conf $RPM_BUILD_ROOT/opt/collectd/etc/conf.d
-cp network-server.conf $RPM_BUILD_ROOT/opt/collectd/etc/conf.d
 cp collectdinitd $RPM_BUILD_ROOT/etc/init.d/collectd
 chmod 755 $RPM_BUILD_ROOT/etc/init.d/collectd
 
@@ -188,7 +159,7 @@ chmod 755 $RPM_BUILD_ROOT/etc/init.d/collectd
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files common
+%files base
 %defattr(-,root,root,-)
 %doc
 /etc/init.d/collectd
@@ -197,6 +168,8 @@ rm -rf $RPM_BUILD_ROOT
 /opt/collectd/lib/libcollectdclient.so
 /opt/collectd/lib/libcollectdclient.so.0
 /opt/collectd/lib/libcollectdclient.so.0.0.0
+/opt/collectd/lib/collectd/csv.la
+/opt/collectd/lib/collectd/csv.so
 /opt/collectd/lib/collectd/network.la
 /opt/collectd/lib/collectd/network.so
 /opt/collectd/lib/collectd/exec.la
@@ -205,7 +178,7 @@ rm -rf $RPM_BUILD_ROOT
 /opt/collectd/lib/collectd/unixsock.so
 /opt/collectd/include/*
 /opt/collectd/var/*
-/opt/collectd/share/*
+/opt/collectd/share/collectd/types.db
 /opt/collectd/bin/*
 /opt/collectd/sbin/*
 /opt/collectd/etc/collectd.conf
@@ -256,21 +229,9 @@ rm -rf $RPM_BUILD_ROOT
 /opt/collectd/lib/collectd/vmem.la
 /opt/collectd/lib/collectd/vmem.so
 
-%files client
-%defattr(-,root,root,-)
-/opt/collectd/etc/conf.d/network-client.conf
-
-%files server
-%defattr(-,root,root,-)
-/opt/collectd/etc/conf.d/network-server.conf
-
-%post common
+%post base
 /sbin/chkconfig --add collectd
-
-%post client
 /etc/init.d/collectd restart
 
-%post server
-/etc/init.d/collectd restart
 %changelog
 
