@@ -162,6 +162,7 @@
 						</source> 
 					</sources>
 				</mapping> 
+<!--
 				<mapping> 
 					<directory>${app.home}/share/collectd/java/</directory> 
 					<filemode>644</filemode> 
@@ -174,6 +175,7 @@
 						</source> 
 					</sources>
 				</mapping> 
+-->
 				<mapping> 
 					<directory>${app.home}/share/collectd/java/</directory> 
 					<filemode>644</filemode> 
@@ -194,7 +196,7 @@
 					<sources> 
 						<source> 
 						<location>target/dependency/collectd-claudia-1.0.jar</location> 
-						<destination>collectd-claudia-1.0.jar</destination>  <!-- No renombro -->
+						<destination>collectd-claudia-1.0.jar</destination>  <destination>collectd-claudia.jar</destination>
 						</source> 
 					</sources>
 				</mapping> 
@@ -210,7 +212,49 @@
 						</source> 
 					</sources>
 				</mapping> 
-				</mappings>
+				<mapping> 
+					<directory>${app.home}/share/collectd</directory>
+					<filemode>644</filemode> 
+					<username>root</username> 
+					<groupname>root</groupname> 
+					<sources> 
+						<source> 
+						<location>${collectd_collector.base}/opt/collectd/share/collectd</location> 
+						</source> 
+					</sources>
+				</mapping> 
+				<mapping> 
+					<directory>${app.home}/etc</directory> 
+					 <configuration>noreplace</configuration>
+					<filemode>644</filemode> 
+					<username>root</username> 
+					<groupname>root</groupname> 
+					<sources> 
+						<source> 
+						<location>${collectd_collector.base}/opt/collectd/etc</location> 
+						</source> 
+					</sources>
+				</mapping> 
+				<mapping> 
+					<directory>/usr/share/doc/collectd-collector/database</directory> 
+					 <configuration>noreplace</configuration>
+					<filemode>644</filemode> 
+					<username>root</username> 
+					<groupname>root</groupname> 
+					<sources> 
+						<source> 
+						<location>${mysqlpersistence.base}/database</location> 
+						</source> 
+					</sources>
+				</mapping> 
+			</mappings>
+			<postinstallScriptlet>
+				                                                                                        <script> /etc/init.d/collectd restart
+				                                                                                        </script>
+			                                                                                  </postinstallScriptlet> 
+			                                                                                  <requires>
+				                                                                                        <require> collectd-extendedprobes-rpm,collectd-java </require>
+			                                                                                   </requires>
 			</configuration> 
 		</plugin>
 	
@@ -218,6 +262,8 @@
 	</build> 
 	<properties>
 		<app.home>/opt/collectd</app.home>
+		<mysqlpersistence.base>../mysql_monpersistence</mysqlpersistence.base>
+		<collectd_collector.base>../collectd-claudia</collectd_collector.base>
 		<rpm.release>1</rpm.release>
 		<maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
 		<RELEASE>0.${maven.build.timestamp}</RELEASE>

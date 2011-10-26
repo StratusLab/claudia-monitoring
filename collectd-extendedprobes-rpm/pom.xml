@@ -33,7 +33,7 @@
 
 					<mappings>
 						<mapping>
-							<directory>/etc/conf.d</directory>
+							<directory>${app.home}/etc/conf.d</directory>
 						        <configuration>noreplace</configuration>
 							<filemode>755</filemode>
 							<username>root</username>
@@ -48,7 +48,7 @@
 							</sources>
 						</mapping>
 						<mapping>
-							<directory>/lib</directory>
+							<directory>${app.home}/lib</directory>
 							<filemode>755</filemode>
 							<username>root</username>
 							<groupname>root</groupname>
@@ -59,7 +59,7 @@
 							</sources>
 						</mapping>
 						<mapping>
-						      <directory>/etc/conf.d</directory>
+						      <directory>${app.home}/etc/conf.d</directory>
 							<filemode>755</filemode>
 							<username>root</username>
 							<groupname>root</groupname>
@@ -67,7 +67,7 @@
 							</sources>
 						</mapping>
 						<mapping>
-							<directory>/share</directory>
+							<directory>${app.home}/share</directory>
 							<filemode>755</filemode>
 							<username>root</username>
 							<groupname>root</groupname>
@@ -92,6 +92,7 @@
 	</build>
 
 	<properties>
+	        <app.home>/opt/collectd</app.home>
 		<cpunormalized_collectd.base>../cpuNormalized_collectdplugin</cpunormalized_collectd.base>
 		<opt.collectd.base>/opt/collectd</opt.collectd.base>
 		<collectd_extendedprobes.base>../collectd-extendedprobes</collectd_extendedprobes.base>
