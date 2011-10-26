@@ -3,4 +3,5 @@
 mysql <<EOF
 drop database $DBNAME;
 drop user $USER;
+drop user $USER@localhost;
 EOF
