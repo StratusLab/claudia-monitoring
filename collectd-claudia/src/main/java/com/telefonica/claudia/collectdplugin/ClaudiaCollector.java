@@ -68,14 +68,14 @@ public class ClaudiaCollector implements CollectdConfigInterface,
         if (hostFilter!=null && !hostFilter.accept(host)) return 0;
         if (filter!=null && !filter.accept(plugin,pluginInstance)) 
             return 0;
-        try {
           
-          String fqn=null;
-          Iterator<MeasureType> itMT=measureTypes.getMeauresTypeFromDataSources(
+        String fqn=null;
+        
+        Iterator<MeasureType> itMT=measureTypes.getMeauresTypeFromDataSources(
                   type,typeInstance,
                   vl.getDataSet().getDataSources()).iterator();
           
-          for (Number n: vl.getValues()) {
+        for (Number n: vl.getValues()) {
               MeasureType measureType=itMT.next();
               Date date=new Date(vl.getTime());
               if (measureType==null) continue;
@@ -85,17 +85,17 @@ public class ClaudiaCollector implements CollectdConfigInterface,
                       pluginInstance,type,typeInstance);
                   if (fqn==null) return 0;
               }
-              if (persistence!=null)
+              if (persistence!=null) try {
+        
                 persistence.insertData(date, fqn,
                         measureType.getMeasureType(),measureType.getMeasureUnit()
                         ,n);
+              } catch (SQLException ex) {
+                 Collectd.logError("error saving data to database "+ex.toString());
+              }
               if (publishService!=null)
                 publishService.publish(date, fqn, measureType.getMeasureType(),
                       measureType.getMeasureUnit(), n);
-          }
-          
-        } catch (SQLException ex) {
-            Collectd.logError("error saving data to database "+ex.toString());
         }
         return 0;
     }
