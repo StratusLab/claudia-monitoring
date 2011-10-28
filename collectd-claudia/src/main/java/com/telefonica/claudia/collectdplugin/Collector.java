@@ -25,6 +25,21 @@ public class Collector {
     private MonPersistence persistence=null;
     private MonPublisher publishService=null;
 
+    public void setMonPersistence(MonPersistence monPersistence) {
+        persistence=monPersistence;
+    }
+    
+    public void setMonPublisher(MonPublisher monPublisher) {
+        publishService=monPublisher;
+    }
+
+    public void setHostFilter(HostFilter hostFilter) {
+        this.hostFilter=hostFilter;
+    }
+    
+    public void setMeasuresFilter(MeasuresFilter measuresFilter) {
+        this.filter=measuresFilter;
+    }
     
     public Collector() throws IOException {
         measureTypes=new MeasureTypeTable();
