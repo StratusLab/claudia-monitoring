@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/repositorio/boi/!svn/ver/20360/europ-iaas/basic-mon/postgresql_monpersistence/trunk/src/main/java/com/telefonica/tcloud/postgresql_monpersistence
+END
+App.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/repositorio/boi/!svn/ver/19994/europ-iaas/basic-mon/postgresql_monpersistence/trunk/src/main/java/com/telefonica/tcloud/postgresql_monpersistence/App.java
+END
+PostgreSQL_MonPersistence.java
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/repositorio/boi/!svn/ver/20360/europ-iaas/basic-mon/postgresql_monpersistence/trunk/src/main/java/com/telefonica/tcloud/postgresql_monpersistence/PostgreSQL_MonPersistence.java
+END
+PostgreSQL_MonPersistenceFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 184
+/repositorio/boi/!svn/ver/19994/europ-iaas/basic-mon/postgresql_monpersistence/trunk/src/main/java/com/telefonica/tcloud/postgresql_monpersistence/PostgreSQL_MonPersistenceFactory.java
+END

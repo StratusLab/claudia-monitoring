@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repositorio/boi/!svn/ver/20011/europ-iaas/basic-mon/postgresql_monpersistence/trunk/database
+END
+install.sh
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repositorio/boi/!svn/ver/20011/europ-iaas/basic-mon/postgresql_monpersistence/trunk/database/install.sh
+END
+create_tables.sql
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repositorio/boi/!svn/ver/20011/europ-iaas/basic-mon/postgresql_monpersistence/trunk/database/create_tables.sql
+END
+inserts_data.sql
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repositorio/boi/!svn/ver/20011/europ-iaas/basic-mon/postgresql_monpersistence/trunk/database/inserts_data.sql
+END
