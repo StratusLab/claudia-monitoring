@@ -35,7 +35,6 @@ import org.collectd.api.ValueList;
 public class ClaudiaCollector implements CollectdConfigInterface, 
         CollectdWriteInterface,CollectdFlushInterface ,
         CollectdShutdownInterface {
-    private FileWriter fw=null;
     private MonPersistence persistence=null;
     private MonPublisher publishService=null;
     
