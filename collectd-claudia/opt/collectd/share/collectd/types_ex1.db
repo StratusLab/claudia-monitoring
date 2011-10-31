@@ -1,3 +1,6 @@
 jmsqueue_rates          rx:GAUGE:0:U, tx:GAUGE:0:U                  
 jmsqueue_pendings       requests:DERIVE:0:U, messages:DERIVE:0:U
 jonas_load              value:GAUGE:0:5000
+cpuNormalizedGauge               value:GAUGE:0:1
+cpuNormalizedDerive               value:DERIVE:0:U
+
