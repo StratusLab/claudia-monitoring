@@ -89,6 +89,23 @@
             <artifactId>mysql_monpersistence</artifactId>
             <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.aggregate</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>7.5.0.v20110901</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.aggregate</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>7.5.0.v20110901</version>
+    </dependency>
+    <dependency>
+      <groupId>com.telefonica.tcloud</groupId>
+      <artifactId>registerfqn4monitoring_ws</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>war</type>
+      <scope>runtime</scope>
+    </dependency>
 
 
 
