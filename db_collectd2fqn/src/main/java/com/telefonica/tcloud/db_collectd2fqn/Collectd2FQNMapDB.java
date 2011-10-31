@@ -21,6 +21,8 @@ import net.spy.memcached.MemcachedClient;
 public class Collectd2FQNMapDB implements CollectdName2FQNMap {
     private MemcachedClient memcachedClient=null;
     private MonPersistence monPersistence=null;
+    private WebServerThread webserver;
+    
     
     @Override
     public String collectd2FQN(String host, String plugin, String pluginInstance, String type, String typeInstance) {
@@ -66,13 +68,18 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
     @Override
     public void shutdown()  {
         memcachedClient.shutdown();
+        webserver.shutdown();
     }
      
     
 
     @Override
     public void setConfig(LinkedHashMap<String, String[]> config) {
-        try {
+      //webserver=new WebServerThread(8080);    
+      //webserver.setDaemon(true);
+      //webserver.start();
+
+      try {
             
             String memcachedServers[]=config.get("memcachedservers");
             String servers=null;
@@ -88,14 +95,12 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
             }
             memcachedClient=new MemcachedClient(new BinaryConnectionFactory(),
                                                AddrUtil.getAddresses(servers));
-        } catch (Exception ex) {
+      } catch (Exception ex) {
             Logger.getLogger(Collectd2FQNMapDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+      }
     }
     @Override
     public void setMonPersistence(MonPersistence monPersistence) {
         this.monPersistence=monPersistence;
     }
-
-    
 }
