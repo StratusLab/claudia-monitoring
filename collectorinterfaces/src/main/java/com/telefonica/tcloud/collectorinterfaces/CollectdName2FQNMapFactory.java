@@ -21,17 +21,13 @@ public abstract class CollectdName2FQNMapFactory {
         try {
             
             URLClassLoader classLoader=URLClassLoader.newInstance(jarList);
-            Class c=Class.forName(factoryClassName,
-                    true,classLoader);
-            String c1=c.getSuperclass().toString();
-            String c2=CollectdName2FQNMapFactory.class.toString();
             
             CollectdName2FQNMapFactory factory=Class.forName(factoryClassName,
                     true,classLoader).asSubclass(
                       CollectdName2FQNMapFactory.class).newInstance();
             return factory.getConversor(config);
         } catch (Exception ex) {
-            Logger.getLogger(MonPersistenceFactory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CollectdName2FQNMapFactory.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
