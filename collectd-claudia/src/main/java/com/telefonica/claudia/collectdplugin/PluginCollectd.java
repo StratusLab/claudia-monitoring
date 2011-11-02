@@ -4,6 +4,7 @@
  */
 package com.telefonica.claudia.collectdplugin;
 
+import com.telefonica.tcloud.collectorexternalinterface.CollectorI;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +27,12 @@ public class PluginCollectd implements CollectdConfigInterface,
         CollectdWriteInterface,CollectdFlushInterface ,
         CollectdShutdownInterface  {
 
-    private Collector collector=new Collector();
+    private CollectorI collector=null;
     private HashMap<String,String[]> dataSourcesByType=
             new HashMap<String,String[]>();
     
     @SuppressWarnings("LeakingThisInConstructor")
-    public PluginCollectd() throws IOException {
+    public PluginCollectd(String configurationFile) throws IOException {
         Collectd.registerWrite("ClaudiaCollector",this);
         Collectd.registerConfig("ClaudiaCollector", this);
         Collectd.registerFlush("ClaudiaCollector", this);
@@ -40,6 +41,11 @@ public class PluginCollectd implements CollectdConfigInterface,
     }
     @Override
     public int config(OConfigItem ci) {
+        try {
+            collector.autoInjectDependencies("");
+        } catch (IOException ex) {
+            Logger.getLogger(PluginCollectd.class.getName()).log(Level.SEVERE, null, ex);
+        }
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
