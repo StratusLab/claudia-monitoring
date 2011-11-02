@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.telefonica.claudia.collectdplugin;
+package com.telefonica.tcloud.moncollector;
 
+import com.telefonica.tcloud.collectorexternalinterface.CollectorI;
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import com.telefonica.tcloud.collectorinterfaces.MonPublisher;
@@ -17,14 +18,17 @@ import java.util.List;
  *
  * @author jomar
  */
-public class Collector {
+public class Collector implements CollectorI {
     private MeasureTypeTable measureTypes=null;
     private CollectdName2FQNMap conversor=null;
     private MeasuresFilter filter=null;
     private HostFilter hostFilter=null;
     private MonPersistence persistence=null;
     private MonPublisher publishService=null;
-
+    // persistence layer may be used for fqn mapping, therefore 
+    // if you don't want to save data is better to tell using publishOnly
+    private boolean publishOnly=false;
+    
     public void setMonPersistence(MonPersistence monPersistence) {
         persistence=monPersistence;
     }
@@ -41,10 +45,19 @@ public class Collector {
         this.filter=measuresFilter;
     }
     
-    public Collector() throws IOException {
-        measureTypes=new MeasureTypeTable();
+    public void setConversor2FQN(CollectdName2FQNMap conversor) {
+        this.conversor=conversor;
     }
     
+    public void setMeasuresTypeTable(MeasureTypeTable measuresTypeTable) {
+        measureTypes=measuresTypeTable;
+    } 
+    
+    public void setPublishOnly(boolean publishOnly) {
+        
+    }
+        
+    @Override
     public void write(String host,String plugin,String pluginInstance,
             String type,String typeInstance,String dataSources[],
             List<Number> values,long timestamp) throws Exception {
@@ -70,7 +83,7 @@ public class Collector {
                       pluginInstance,type,typeInstance);
                   if (fqn==null) return;
               }
-              if (persistence!=null) try {
+              if (!publishOnly && persistence!=null) try {
         
                 persistence.insertData(date, fqn,
                         measureType.getMeasureType(),measureType.getMeasureUnit()
@@ -89,6 +102,7 @@ public class Collector {
 
     }
     
+    @Override
     public int shutdown() {
         if (persistence!=null) {
           persistence.shutdown();
@@ -100,6 +114,13 @@ public class Collector {
         }
         conversor.shutdown();
         return 0;
+        
+    }
+    
+    @Override
+    public void autoInjectDependencies(String propertiesFile) throws IOException {
+        DInjector injector=new DInjector();
+        injector.inject(propertiesFile, this);
         
     }
 }
