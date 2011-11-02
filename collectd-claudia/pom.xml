@@ -32,6 +32,11 @@
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>collectorinterfaces</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.telefonica.tcloud</groupId>
+      <artifactId>collectorexternalinterface</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
       <plugins>
