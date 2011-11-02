@@ -9,7 +9,6 @@ import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistenceFactory;
 import com.telefonica.tcloud.collectorinterfaces.MonPublisher;
 import com.telefonica.tcloud.collectorinterfaces.MonPublisherFactory;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -17,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import java.util.logging.Logger;
 import org.collectd.api.Collectd;
 import org.collectd.api.CollectdConfigInterface;
 import org.collectd.api.CollectdFlushInterface;
@@ -42,6 +42,7 @@ public class ClaudiaCollector implements CollectdConfigInterface,
     private CollectdName2FQNMap conversor=null;
     private MeasuresFilter filter=null;
     private HostFilter hostFilter=null;
+    Logger logger=Logger.getLogger(ClaudiaCollector.class.getName());
     @SuppressWarnings("LeakingThisInConstructor")
     public ClaudiaCollector() throws IOException {
         //fw=new FileWriter("/tmp/datos.txt");
@@ -165,6 +166,8 @@ public class ClaudiaCollector implements CollectdConfigInterface,
                     String className=null;
                     if (item2.getKey().equalsIgnoreCase("classname")) try {
                       className=item2.getValues().get(0).getString();
+                      //logger.setLevel(Level.ALL);
+                      //logger.addHandler(new FileHandler("/tmp/traza.txt"));
                       conversor=
                           Class.forName(className).asSubclass(
                                 CollectdName2FQNMap.class).newInstance();
