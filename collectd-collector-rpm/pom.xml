@@ -49,6 +49,12 @@
 		<groupId>org.apache.servicemix.bundles</groupId> 
 		<artifactId>org.apache.servicemix.bundles.spymemcached</artifactId> 
 	</dependency>
+	<dependency>
+	      <groupId>com.telefonica.tcloud</groupId>
+              <artifactId>registerfqn4monitoring_ws</artifactId>
+              <type>war</type>
+              <version>1.0-SNAPSHOT</version>
+       </dependency>
 	</dependencies>
 
 <!-- FIN DEPENDENCIAS -->
@@ -69,9 +75,9 @@
 			
 			<executions><!-- krt por aqui... --> 
 
-			<execution> 
-				<id>copy</id> 
-				<goals> <goal>copy</goal> </goals>
+                        <execution>
+				<id>copy-dependencies</id> 
+				<goals> <goal>copy-dependencies</goal> </goals>
 				<configuration> 
 					<artifactItems> 
 					<artifactItem> 
@@ -80,6 +86,14 @@
 						<version>1.0-SNAPSHOT</version>
 						<type>jar</type>
 					</artifactItem> 
+					</artifactItems>
+			       </configuration>
+                        </execution>
+			<execution> 
+				<id>copy</id> 
+				<goals> <goal>copy</goal> </goals>
+				<configuration> 
+					<artifactItems> 
 					<artifactItem> 
 					 	<groupId>com.telefonica.tcloud</groupId> 
 						<artifactId>mysql_monpersistence</artifactId> 
@@ -160,6 +174,22 @@
 						<location>target/dependency/mysql_monpersistence-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
 						<destination>mysql_monpersistence.jar</destination> 
 						</source> 
+						<source>
+						<location>
+						target/dependency/jetty-server-7.5.0.v20110901.jar
+						</location>
+						<destination>
+						jetty-server.jar
+						</destination>
+						</source>
+						<source>
+						<location>
+						target/dependency/jetty-webapp-7.5.0.v20110901.jar
+						</location>
+						<destination>
+						jetty-webapp.jar
+						</destination>
+						</source>
 					</sources>
 				</mapping> 
 <!--
@@ -236,6 +266,17 @@
 					</sources>
 				</mapping> 
 				<mapping> 
+					<directory>${monitoring.home}/shared</directory> 
+					<filemode>644</filemode> 
+					<username>root</username> 
+					<groupname>root</groupname> 
+					<sources> 
+						<source> 
+						<location>target/dependency/registerfqn4monitoring_ws-1.0-SNAPSHOT.war</location> 
+						</source> 
+					</sources>
+				</mapping> 
+				<mapping> 
 					<directory>/usr/share/doc/collectd-collector/database</directory> 
 					 <configuration>noreplace</configuration>
 					<filemode>644</filemode> 
@@ -253,7 +294,7 @@
 				                                                                                        </script>
 			                                                                                  </postinstallScriptlet> 
 			                                                                                  <requires>
-				                                                                                        <require> collectd-extendedprobes-rpm,collectd-java </require>
+				                                                                                        <require> collectd-extendedprobes-rpm,collectd-java,memcached </require>
 			                                                                                   </requires>
 			</configuration> 
 		</plugin>
@@ -262,6 +303,7 @@
 	</build> 
 	<properties>
 		<app.home>/opt/collectd</app.home>
+		<monitoring.home>/opt/monitoring</monitoring.home>
 		<mysqlpersistence.base>../mysql_monpersistence</mysqlpersistence.base>
 		<collectd_collector.base>../collectd-claudia</collectd_collector.base>
 		<rpm.release>1</rpm.release>

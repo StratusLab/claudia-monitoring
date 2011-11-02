@@ -24,6 +24,7 @@ Requires: collectd-base
 %package java
 Summary: collectd monitoring solution. Java bindings package
 Requires: collectd-base
+AutoReq: no
 
 %description base
 This package contains a basic installation of collectd monitoring solution, base to server (collector) and client (probes) sides.

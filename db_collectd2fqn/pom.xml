@@ -9,15 +9,13 @@
 
   <name>db_collectd2fqn</name>
   <url>http://maven.apache.org</url>
-
-  <parent> 
-  	<groupId>com.telefonica.tcloud</groupId> 
-	<artifactId>basicmonitoring</artifactId>
-	<version>1.0-SNAPSHOT</version>
+  <parent>
+   <groupId>com.telefonica.tcloud</groupId>
+   <artifactId>basicmonitoring</artifactId>
+   <version>1.0-SNAPSHOT</version>
   </parent>
 
-
-    <build>
+  <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -50,8 +48,18 @@
       <artifactId>org.apache.servicemix.bundles.spymemcached</artifactId>
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>org.eclipse.jetty.aggregate</groupId>
+      <artifactId>jetty-webapp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.aggregate</groupId>
+      <artifactId>jetty-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.telefonica.tcloud</groupId>
+      <artifactId>registerfqn4monitoring_ws</artifactId>
+      <type>war</type>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>

@@ -68,4 +68,17 @@ public class MeasureTypeTable {
         tableByType.put(type, result);
         return result;
     }
+    
+        public ArrayList<MeasureType> getMeauresTypeFromDataSources(String type,
+            String typeInstance,String dataSources[]) {
+        if (typeInstance!=null && typeInstance.length()!=0)
+            type=type+"-"+typeInstance;
+        ArrayList<MeasureType> result=tableByType.get(type);
+        if (result!=null) return result;
+        result=new ArrayList<MeasureType>();
+        for (String dataSource : dataSources) 
+            result.add(getMeasureType(type,dataSource));
+        tableByType.put(type, result);
+        return result;
+    }
 }

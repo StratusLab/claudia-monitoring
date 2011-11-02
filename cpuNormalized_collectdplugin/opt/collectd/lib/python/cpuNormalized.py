@@ -9,9 +9,9 @@ cpus=os.sysconf("SC_NPROCESSORS_ONLN")
 
 def config(conf):
  global useGauges
- if conf.children[0].key=='useGauges' :
+ if conf.children[0].key=='useGauges' : 
     useGauges=conf.children[0].values[0]
-
+	
 def write_metric(name,value):
  metric= collectd.Values()
  metric.plugin= 'cpuNormalized'
@@ -48,7 +48,7 @@ def read(data=None):
        line=f.readline().split()[1:]
        fields2_bycpu.append(line)
    user=(float(fields2[0])-float(fields1[0]))/jiffiesbysecond/10/cpus
-  nice=(float(fields2[1])-float(fields1[1]))/jiffiesbysecond/10/cpus
+   nice=(float(fields2[1])-float(fields1[1]))/jiffiesbysecond/10/cpus
    system=(float(fields2[2])-float(fields1[2]))/jiffiesbysecond/10/cpus
    idle=(float(fields2[3])-float(fields1[3]))/jiffiesbysecond/10/cpus
    iowait=(float(fields2[4])-float(fields1[4]))/jiffiesbysecond/10/cpus
@@ -59,7 +59,7 @@ def read(data=None):
    write_metric('system',system)
    write_metric('nice',nice)
    write_metric('idle',idle)
-   write_metric('idleOrNice',idleOrNice)
+   write_metric('idleOrNice',idleOrNice)    
    write_metric('iowait',iowait)
    write_metric('irq',irq)
    write_metric('softirq',softirq)
@@ -70,22 +70,16 @@ def read(data=None):
        guest=(float(fields2[8])-float(fields1[8]))/jiffiesbysecond/10/cpus
        write_metric('guest',guest)
 
-   user=(float(fields2[0])-float(fields1[0]))/jiffiesbysecond/10/cpus
-   nice=(float(fields2[1])-float(fields1[1]))/jiffiesbysecond/10/cpus
-   system=(float(fields2[2])-float(fields1[2]))/jiffiesbysecond/10/cpus
-   idle=(float(fields2[3])-float(fields1[3]))/jiffiesbysecond/10/cpus
-   iowait=(float(fields2[4])-float(fields1[4]))/jiffiesbysecond/10/cpus
-   irq=(float(fields2[5])-float(fields1[5]))/jiffiesbysecond/10/cpus
-   softirq=(float(fields2[6])-float(fields1[6]))/jiffiesbysecond/10/cpus
-   idleOrNice=idle+nice
-
  # always write derive metrics
  write_metric_derive('user',float(fields1[0])/jiffiesbysecond/cpus)
  write_metric_derive('nice',float(fields1[1])/jiffiesbysecond/cpus)
  write_metric_derive('system',float(fields1[2])/jiffiesbysecond/cpus)
  write_metric_derive('idle',float(fields1[3])/jiffiesbysecond/cpus)
+ write_metric_derive('idleOrNice',float(fields1[3])/jiffiesbysecond/cpus+
+    float(fields1[1])/jiffiesbysecond/cpus)
  write_metric_derive('iowait',float(fields1[4])/jiffiesbysecond/cpus)
  write_metric_derive('irq',float(fields1[5])/jiffiesbysecond/cpus)
+ write_metric_derive('softirq',float(fields1[6])/jiffiesbysecond/cpus)
  write_metric_derive('softirq',float(fields1[6])/jiffiesbysecond/cpus)
  if (len(fields2)>=8) :
    steal=float(fields1[7])/jiffiesbysecond/cpus

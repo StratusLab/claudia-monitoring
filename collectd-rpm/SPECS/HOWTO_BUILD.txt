@@ -1,0 +1,2 @@
+rpmbuild -ba -D "_topdir $(pwd)/.." collectd.spec 
+
