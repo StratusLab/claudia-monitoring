@@ -12,6 +12,8 @@ import com.telefonica.tcloud.collectorinterfaces.MonPublisher;
 import com.telefonica.tcloud.collectorinterfaces.MonPublisherFactory;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
@@ -19,8 +21,22 @@ import java.util.Properties;
  *
  * @author jomar
  */
+
+
 public class DInjector {
-       
+    
+    public static final String default_modules_path="/opt/monitoring/shared/modules/";
+    private URL[] jarList2URLs(String baseDir,String jarList) throws MalformedURLException {
+      String jars[]=jarList.split(",");
+      URL urls[]=new URL[jars.length];
+      String baseUrl="file://"+baseDir+'/';
+      int cont=0;
+      for (String jar: jars) {
+          urls[cont++]=new URL(baseUrl+jar);
+      }
+      return urls;
+    }
+    
     public void inject(String fileName,Collector collector) throws IOException {
         Properties properties=new Properties();
         properties.load(new FileReader(fileName));
@@ -37,6 +53,7 @@ public class DInjector {
             configuration.put(key, values);
         }
         
+        String modules=properties.getProperty("modules.path");
         String measuresFilterName=properties.getProperty("measuresfilter.path");
         String hostFilterName=properties.getProperty("hostfilter.path");
         String publisher=properties.getProperty("publisher.class");
@@ -44,6 +61,7 @@ public class DInjector {
         String conversor=properties.getProperty("conversor2fqn.class");
         String measuresTypesDir=properties.getProperty("measuretypes.path");
         
+        if (modules==null) modules=default_modules_path;
         
         collector.setHostFilter(hostFilterName!=null?new HostFilter(hostFilterName)
                 :null);
@@ -51,18 +69,26 @@ public class DInjector {
                 new MeasuresFilter(measuresFilterName):null);
         
         if (publisher!=null) {
+            String publisherJars=properties.getProperty("publisher.jars");
+            URL jarURLs[]=jarList2URLs(modules,publisherJars);
+            
             MonPublisher monPublisher=MonPublisherFactory.getPublisher(
-                    publisher,configuration);
+                    publisher,jarURLs,configuration);
             collector.setMonPublisher(monPublisher);
                     
         } else collector.setMonPublisher(null);
         if (persistence!=null) {
+            String persistenceJars=properties.getProperty("persistence.jars");
+            URL jarURLs[]=jarList2URLs(modules,persistenceJars);
             collector.setMonPersistence(monPersistence=
-                MonPersistenceFactory.getPersistence(persistence, configuration)
+                MonPersistenceFactory.getPersistence(persistence, jarURLs,
+                    configuration)
                     );
         } else collector.setMonPersistence(null);
         if (conversor!=null) {
             //Class.forName("").getConstructor(String.class).newInstance("");
+            String conversorJars=properties.getProperty("conversor2fqn.jars");
+            URL jarURLs[]=jarList2URLs(modules,conversorJars);
             CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
                     conversor, configuration);
             map.setMonPersistence(monPersistence);
