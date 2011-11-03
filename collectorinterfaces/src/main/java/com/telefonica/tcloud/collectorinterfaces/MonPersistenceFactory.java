@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public abstract class MonPersistenceFactory {
     public abstract MonPersistence getPersistence(LinkedHashMap<String,String[]> config);
-        public static MonPersistence getConversor(String factoryClassName,URL[] jarList,
+    public static MonPersistence getPersistence(String factoryClassName,URL[] jarList,
             LinkedHashMap<String,String[]> config) {
         try {
             

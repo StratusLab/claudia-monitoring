@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public  abstract class MonPublisherFactory {
     public abstract MonPublisher getPublisher(LinkedHashMap<String,String[]> config);
-        public static MonPublisher getConversor(String factoryClassName,URL[] jarList,
+        public static MonPublisher getPublisher(String factoryClassName,URL[] jarList,
             LinkedHashMap<String,String[]> config) {
         try {
             
