@@ -41,12 +41,23 @@ public class PluginCollectd implements CollectdConfigInterface,
     }
     @Override
     public int config(OConfigItem ci) {
+        
+        String collectorClass=null,collectorConfig=null;
+        for (OConfigItem item : ci.getChildren()) {
+            if (item.getKey().equalsIgnoreCase("collectorclass")) 
+                 collectorClass=item.getValues().get(0).toString();
+            if (item.getKey().equalsIgnoreCase("collectorconfig")) 
+                 collectorConfig=item.getValues().get(0).toString();
+        }
         try {
-            collector.autoInjectDependencies("");
+            
+            
+            collector.autoInjectDependencies(collectorConfig);
+            return 0;
         } catch (IOException ex) {
             Logger.getLogger(PluginCollectd.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
         }
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
