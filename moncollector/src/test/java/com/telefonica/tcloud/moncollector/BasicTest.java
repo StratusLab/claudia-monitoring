@@ -4,6 +4,7 @@
  */
 package com.telefonica.tcloud.moncollector;
 
+/*
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMapFactory;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
@@ -12,8 +13,11 @@ import com.telefonica.tcloud.collectorinterfaces.MonPublisher;
 import com.telefonica.tcloud.collectorinterfaces.MonPublisherFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+ * 
+ */
 import java.util.ArrayList;
 import java.util.Date;
+//import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,10 +29,7 @@ import junit.framework.TestCase;
  */
 public class BasicTest extends TestCase {
     private Collector collector=null;
-    // there are test that does not work without a
-    // local installation. This test are only enabled
-    private boolean disableLocalTests=true;
-    
+   
     public BasicTest(String testName) {
         super(testName);
     }
@@ -81,6 +82,7 @@ public class BasicTest extends TestCase {
        
     }
     
+    /*
     public void testDymaicLoadPersistence() {
         try {
             URL urls[]={new URL(
@@ -88,56 +90,22 @@ public class BasicTest extends TestCase {
  //               new URL(
  //               "file:////opt/collectd/share/collectd/java/spymemcached-2.5_2.jar"),
             };
+            LinkedHashMap<String,String[]> config=new LinkedHashMap<String,String[]>();
+            String mysqlurl[]={"jdbc:mysql://localhost:3306/monitoring"};
+            String mysqluser[]={"claudia"};
+            String mysqlpassword[]={"ClaudiaPass"};
+            config.put("mysqlurl",mysqlurl);
+            config.put("mysqluser",mysqluser);
+            config.put("mysqlpassword",mysqlpassword);
             MonPersistence persistence=MonPersistenceFactory.getPersistence(
                     
                     "com.telefonica.tcloud.mysql_monpersistence.MySQL_MonPersistenceFactory",
-                    urls,null);
+                    urls,config);
             assertNotNull(persistence);
         } catch (MalformedURLException ex) {
             Logger.getLogger(BasicTest.class.getName()).log(Level.SEVERE, null, ex);
             fail();
         }
     }
-    
-    /*
-    public void testDynamicLoadPublisher() {
-     try {
-            URL urls[]={new URL(
-                "file:////opt/collectd/share/collectd/java/silbops_publisher.jar"),
- //               new URL(
- //               "file:////opt/collectd/share/collectd/java/spymemcached-2.5_2.jar"),
-            };
-            MonPublisher publisher=MonPublisherFactory.getPublisher(
-                    
-                    "com.telefonica.tcloud.silbopspublisher.SilbopsMonPublisherFactory",
-                    urls,null);
-            assertNotNull(publisher);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(BasicTest.class.getName()).log(Level.SEVERE, null, ex);
-            fail();
-        }
-    }
-     * 
-     */
-    public void testDynamicLoadMap() {
-        try {
-            URL urls[]={new URL(
-                "file:////opt/collectd/share/collectd/java/db_collectd2fqn.jar"),
-                new URL(
-                "file:////opt/collectd/share/collectd/java/spymemcached-2.5_2.jar")
-            };
-            CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
-                    
-                    "com.telefonica.tcloud.db_collectd2fqn.Collectd2FQNMapDBFactory",
-                    urls,null);
-            assertNotNull(map);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(BasicTest.class.getName()).log(Level.SEVERE, null, ex);
-            fail();
-        }
-        
-        
-       
-                
-    }
+    */
 }
