@@ -53,6 +53,7 @@ public class DInjector {
             configuration.put(key, values);
         }
         
+        String publishOnly=properties.getProperty("publishonly");
         String modules=properties.getProperty("modules.path");
         String measuresFilterName=properties.getProperty("measuresfilter.path");
         String hostFilterName=properties.getProperty("hostfilter.path");
@@ -90,7 +91,7 @@ public class DInjector {
             String conversorJars=properties.getProperty("conversor2fqn.jars");
             URL jarURLs[]=jarList2URLs(modules,conversorJars);
             CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
-                    conversor, configuration);
+                    conversor, jarURLs, configuration);
             map.setMonPersistence(monPersistence);
             collector.setConversor2FQN(map);
                     
@@ -99,6 +100,8 @@ public class DInjector {
                 ?new MeasureTypeTable(measuresTypesDir)
                 :new MeasureTypeTable());
         
+        if (publishOnly!=null&&publishOnly.equalsIgnoreCase("true"))
+            collector.setPublishOnly(true);
         
     }
 }
