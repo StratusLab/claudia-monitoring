@@ -75,9 +75,9 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
 
     @Override
     public void setConfig(LinkedHashMap<String, String[]> config) {
-      //webserver=new WebServerThread(8080);    
-      //webserver.setDaemon(true);
-      //webserver.start();
+      webserver=new WebServerThread(8080);    
+      webserver.setDaemon(true);
+      webserver.start();
 
       try {
             
