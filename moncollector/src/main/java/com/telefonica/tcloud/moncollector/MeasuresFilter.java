@@ -38,6 +38,7 @@ public class MeasuresFilter {
         whiteList=filter.contains("!"); 
     }
     boolean accept(String plugin,String pluginInstance) {
+       if (pluginInstance==null) pluginInstance="";
        if (whiteList) {
            if (pluginInstance.length()>0&&filter.contains(plugin+'-'+
                    pluginInstance)) return true;
