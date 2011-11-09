@@ -257,7 +257,7 @@
 				</mapping> 
 				<mapping> 
 					<directory>${monitoring.home}/shared</directory> 
-					<filemode>644</filemode> 
+					<filemode>655</filemode> 
 					<username>root</username> 
 					<groupname>root</groupname> 
 					<sources> 
