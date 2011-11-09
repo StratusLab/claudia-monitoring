@@ -56,9 +56,9 @@ public class IntegrationTest extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-    public void testSetup()  {
+    public void testAll()  {
         
-       if (disabled) assert(true);
+       if (disabled) { assert(true); return; }
        
        Date now=new Date();
        String dataSources[]={"rx","tx"};
