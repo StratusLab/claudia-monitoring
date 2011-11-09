@@ -50,7 +50,7 @@ public class ClaudiaCollector implements CollectdConfigInterface,
         measureTypes=new MeasureTypeTable();
         //fw.write("Después:");
         //fw.close();
-        Collectd.registerWrite("ClaudiaCollector",this);
+       
         Collectd.registerConfig("ClaudiaCollector", this);
         Collectd.registerFlush("ClaudiaCollector", this);
         Collectd.registerShutdown("ClaudiaCollector", this);
@@ -75,6 +75,7 @@ public class ClaudiaCollector implements CollectdConfigInterface,
                   type,typeInstance,
                   vl.getDataSet().getDataSources()).iterator();
           
+
         for (Number n: vl.getValues()) {
               MeasureType measureType=itMT.next();
               Date date=new Date(vl.getTime());
@@ -196,6 +197,8 @@ public class ClaudiaCollector implements CollectdConfigInterface,
         if (conversor==null) 
                     conversor=new CollectdName2FQNDefaultImpl();
         conversor.setMonPersistence(persistence);
+        Collectd.registerWrite("ClaudiaCollector",this);
+        
         return 0;
         
     }
