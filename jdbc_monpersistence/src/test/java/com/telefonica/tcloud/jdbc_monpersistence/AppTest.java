@@ -15,7 +15,11 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
-   
+    private void empty_tables(Connection c) throws SQLException{
+        c.createStatement().execute("delete from nodedirectory ");        
+        c.createStatement().execute("delete from fqn");
+        c.createStatement().execute("delete from monitoringsample");
+    }
     /**
      * Create the test case
      *
@@ -27,7 +31,13 @@ public class AppTest
         
         String dbURL="jdbc:derby:testdb;create=true";
         
-        MonPersistence persistence = new Derby_MonPersistence(dbURL, "user", "password");        
+        MonPersistence persistence = new Derby_MonPersistence(dbURL, "user", "password");
+        
+        try {
+            empty_tables( ((JDBC_MonPersistence)persistence).getConnection());
+        } catch (Exception e) {
+            //Esto son pruebas. No es lugar para tirar exceptiones.
+        }
         
         String host="collector";
         String fqn="es.tid.customers.cc1.services.monitoring.vees.collector.replicas.2";

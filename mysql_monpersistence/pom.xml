@@ -34,7 +34,11 @@
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>collectorinterfaces</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>jdbc_monpersistence</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
   <build>
       <plugins>

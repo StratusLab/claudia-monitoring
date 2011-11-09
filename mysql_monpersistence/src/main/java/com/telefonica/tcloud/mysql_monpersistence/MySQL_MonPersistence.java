@@ -5,27 +5,16 @@
 package com.telefonica.tcloud.mysql_monpersistence;
 
 
-import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
-import com.telefonica.tcloud.collectorinterfaces.MonPersistenceFactory;
-import java.math.BigDecimal;
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import com.telefonica.tcloud.jdbc_monpersistence.JDBC_MonPersistence;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author jomar
  */
-public class MySQL_MonPersistence implements MonPersistence {
+public class MySQL_MonPersistence extends JDBC_MonPersistence {
+    public static final String driver="com.mysql.jdbc.Driver";
+    /* --- jicg22 obsolete!
     private Connection con=null;
     private PreparedStatement insertFQNMap,deleteFQNMap,searchFQN,
             searchFQNPlugNull,deleteFQNMapPlugNull;
@@ -34,10 +23,15 @@ public class MySQL_MonPersistence implements MonPersistence {
     private HashMap<String,Long> associatedIdCache;
     
     //FileWriter fw=null;
-    
+*/    
     public MySQL_MonPersistence(String url,String user,String password) throws 
             ClassNotFoundException, SQLException {
-       Class driver=Class.forName("com.mysql.jdbc.Driver");
+        super(url, user, password, driver);
+        strInsertFQNMap="REPLACE INTO fqn (fqn,host,plugin) VALUES (?,?,?)";
+        prepareConnection();
+        //monitorizationStart(this);
+       /* 
+        * Class driver=Class.forName("com.mysql.jdbc.Driver");
        con=
             DriverManager.getConnection(
                url,user,password);
@@ -60,10 +54,11 @@ public class MySQL_MonPersistence implements MonPersistence {
                +"day,month,year,hour,minute,value,measure_type,unit,"+
                "associatedObject_internalId) VALUES (?,?,?,?,?,?,?,?,?,?)");
        associatedIdCache=new HashMap<String,Long>();
- 
+       * 
+       */
     }
     
-    private Long getAssociatedObjectId(String fqn) throws SQLException {
+    /* private Long getAssociatedObjectId(String fqn) throws SQLException {
         selectAssociatedId.setString(1, fqn);
         ResultSet result=selectAssociatedId.executeQuery();
         
@@ -95,117 +90,35 @@ public class MySQL_MonPersistence implements MonPersistence {
         Long id=result.getLong(1);
         result.close();
         return id;
-    }
-    public void insertData(Date time,String fqn,String measureType,
+    } */
+    
+    /* public void insertData(Date time,String fqn,String measureType,
             String measureUnit,Number value) throws SQLException {
-        Long id=associatedIdCache.get(fqn);
-        if (id==null) {
-            id=getAssociatedObjectId(fqn);
-            if (id==null) return;
-        }
-                
-
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(time);
+                      
+        --- Subido a la clase padre
         
-        insertMeasure.setTimestamp(1, new java.sql.Timestamp(time.getTime()));
-        insertMeasure.setInt(2,calendar.get(Calendar.DAY_OF_MONTH));
-        insertMeasure.setInt(3,calendar.get(Calendar.MONTH)+1);
-        insertMeasure.setInt(4,calendar.get(Calendar.YEAR));
-        insertMeasure.setInt(5,calendar.get(Calendar.HOUR));
-        insertMeasure.setInt(6,calendar.get(Calendar.MINUTE));
-        insertMeasure.setString(7, value.toString());
-        insertMeasure.setString(8, measureType);
-        insertMeasure.setString(9, measureUnit);
-        insertMeasure.setBigDecimal(10, BigDecimal.valueOf(id));
-        insertMeasure.executeUpdate();
-        
-        /*
-        StringBuilder insert=new StringBuilder(
-            "INSERT INTO monitoringsample (datetime,day,month,year,hour,minute,"
-           +"value,measure_type,unit,associatedObject_internalId) VALUES ('");
-        insert.append(new java.sql.Timestamp(time.getTime()));
-        insert.append("',").append(calendar.get(Calendar.DAY_OF_MONTH));
-        insert.append(',').append(calendar.get(Calendar.MONTH)).append(',');
-        insert.append(calendar.get(Calendar.YEAR)).append(',');
-        insert.append(calendar.get(Calendar.HOUR)).append(',');
-        insert.append(calendar.get(Calendar.MINUTE)).append(",'").append(value);
-        insert.append("','").append(measureType).append("','");
-        insert.append(measureUnit).append("',");
-        insert.append(id).append(");");
-
-        Statement st=con.createStatement();
-        st.executeUpdate(insert.toString());
-        st.close();
-         * 
-         */
-        return;      
-        
-    }
+    } */
     
-    public void insertFQNMap(String fqn,String host,String pluginWithInstance) throws SQLException {
+    /* public void insertFQNMap(String fqn,String host,String pluginWithInstance) throws SQLException {
 
-        insertFQNMap.setString(1, fqn);
-        insertFQNMap.setString(2,host);
-        insertFQNMap.setString(3,pluginWithInstance);
-        insertFQNMap.execute();      
-        
-        insertNodeDirectory.setString(1, fqn);
-        insertNodeDirectory.setInt(2, 4);
-        insertNodeDirectory.setBigDecimal(3, null);
-        insertNodeDirectory.execute();
-        return;
+       --- Subido a la clase padre
                   
-    }
-    public void deleteFQNMap(String host, String pluginWithInstance) {
-        try {
-          String fqn=searchFQN(host,pluginWithInstance);  
-          if (pluginWithInstance==null ||pluginWithInstance.isEmpty()) {
-           deleteFQNMapPlugNull.setString(1, host);
-           deleteFQNMapPlugNull.executeUpdate();
-
-          } else {
-           deleteFQNMap.setString(1, host);
-           deleteFQNMap.setString(2, pluginWithInstance);
-           deleteFQNMap.executeUpdate();
-          }
-          markNodeAsInactive.setString(1, fqn);
-          markNodeAsInactive.setString(2, fqn+".%");
-          markNodeAsInactive.executeUpdate();
-
-         } catch (SQLException ex) {
-            Logger.getLogger(MySQL_MonPersistence.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }    
-    public String searchFQN(String host,String pluginWithInstance) throws SQLException {
-        String fqn=null;
-        ResultSet rs=null;
-        if (pluginWithInstance==null||pluginWithInstance.isEmpty()) {
-            searchFQNPlugNull.setString(1,host);
-            searchFQNPlugNull.execute();
-            rs=searchFQNPlugNull.getResultSet();
-        } else {
-          searchFQN.setString(1, host);
-          searchFQN.setString(2, pluginWithInstance);
-          searchFQN.execute();
-          rs=searchFQN.getResultSet();
-        }
-        if (rs.next()) {
-            fqn=rs.getString(1);
-        } 
-        rs.close();
-        return fqn;
+    }*/
+    /* public void deleteFQNMap(String host, String pluginWithInstance) {
         
+       --- Subido a la clase padre
+      
+    } */    
+    /*
+    public String searchFQN(String host,String pluginWithInstance) throws SQLException {
+      ---- Subido a la clase padre.   
     }
+    */
+    /* 
     public void shutdown() {
-        try {
-            con.close();
-        } catch (SQLException ex) {
-            
-        }
-    }
-    
+       --- Subido a la clase padre!!!
+    } */
+    /*
     public static void main(String argv[]) throws SQLException {
         LinkedHashMap<String,String[]> config=new LinkedHashMap<String,String[]>();
         String mysqlurl[]={"jdbc:mysql://localhost:3306/monitoring"};
@@ -226,10 +139,12 @@ public class MySQL_MonPersistence implements MonPersistence {
         
         System.out.println("FQN: "+persistence.searchFQN(host,"plug1-value1"));
         System.out.println("FQN: "+persistence.searchFQN(host,null));
-        System.out.println("ID: "+((MySQL_MonPersistence)persistence).getAssociatedObjectId(fqn+".plug2.value3"));
+        //System.out.println("ID: "+((MySQL_MonPersistence)persistence).getAssociatedObjectId(fqn+".plug2.value3"));
         //persistence.deleteFQNMap(host,null);
         //persistence.deleteFQNMap(host, "plug1-value1");
-    }
+        * 
+        
+    }*/
 
 
 }
