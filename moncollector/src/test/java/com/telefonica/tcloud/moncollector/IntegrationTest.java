@@ -4,6 +4,9 @@
  */
 package com.telefonica.tcloud.moncollector;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.api.client.WebResource;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,9 +68,13 @@ public class IntegrationTest extends TestCase {
        List<Number> values= new ArrayList<Number>();
        values.add(30);
        values.add(500);
+       
         try {
+            ItemResource_JerseyClient restClient=new ItemResource_JerseyClient("collector2");
+            restClient.putText("es.tid.customers.cc1.services.monitoring.vees.collector.replicas.2");
             collector.write("collector", "net", null, "if_packets", null, dataSources, values, 
                          now.getTime());
+            
             assert(true);
         } catch (Exception ex) {
             Logger.getLogger(IntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,7 +82,42 @@ public class IntegrationTest extends TestCase {
         }
        
     }
+
+    static class ItemResource_JerseyClient {
+
+        private WebResource webResource;
+        private Client client;
+        private static final String BASE_URI = "http://localhost:8080/registerfqn4monitoring_ws/webresources/";
+
+        public ItemResource_JerseyClient(String name) {
+            com.sun.jersey.api.client.config.ClientConfig config = new com.sun.jersey.api.client.config.DefaultClientConfig();
+            client = Client.create(config);
+            String resourcePath = java.text.MessageFormat.format("maps2fqn/{0}", new Object[]{name});
+            webResource = client.resource(BASE_URI).path(resourcePath);
+        }
+
+        public void setResourcePath(String name) {
+            String resourcePath = java.text.MessageFormat.format("maps2fqn/{0}", new Object[]{name});
+            webResource = client.resource(BASE_URI).path(resourcePath);
+        }
+
+        public String getText() throws UniformInterfaceException {
+            WebResource resource = webResource;
+            return resource.accept(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
+        }
+
+        public void delete() throws UniformInterfaceException {
+            webResource.delete();
+        }
+
+        public void putText(Object requestEntity) throws UniformInterfaceException {
+            webResource.type(javax.ws.rs.core.MediaType.TEXT_PLAIN).put(requestEntity);
+        }
+
+        public void close() {
+            client.destroy();
+        }
+    }
     
-    // TODO add test methods here. The name must begin with 'test'. For example:
-    // public void testHello() {}
+   
 }
