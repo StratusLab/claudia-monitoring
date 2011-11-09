@@ -4,15 +4,12 @@
  */
 package com.telefonica.tcloud.postgresql_monpersistence;
 
-import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
-import java.math.BigDecimal;
+import com.telefonica.tcloud.jdbc_monpersistence.JDBC_MonPersistence;
+import com.telefonica.tcloud.jdbc_monpersistence.MonConnection;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -22,47 +19,57 @@ import java.util.logging.Logger;
  *
  * @author jomar
  */
-public class PostgreSQL_MonPersistence implements MonPersistence {
-    public static final int PAUSE_MILLISECONDS_BEFORE_MANUAL_RETRIES=60000;
-    public static final int PAUSE_MILLISECONDS_BEFORE_AUTOMATIC_CHECKS=60000;
+public class PostgreSQL_MonPersistence extends JDBC_MonPersistence {
+    private static final String jdbcDriver="org.postgresql.Driver";
     
-    private Connection con=null;
-    private PreparedStatement insertFQNMap,deleteFQNMap,searchFQN,
+    //public static final int PAUSE_MILLISECONDS_BEFORE_MANUAL_RETRIES=60000;
+    //public static final int PAUSE_MILLISECONDS_BEFORE_AUTOMATIC_CHECKS=60000;
+    
+    //private Connection con=null;
+    /*private PreparedStatement insertFQNMap,deleteFQNMap,searchFQN,
             searchFQNPlugNull,deleteFQNMapPlugNull;
     private PreparedStatement selectAssociatedId,insertNodeDirectory;
-    private PreparedStatement insertMeasure,markNodeAsInactive;
-    private PreparedStatement testConnection;
+    private PreparedStatement insertMeasure,markNodeAsInactive;*/
+    private PreparedStatement testConnection; 
     private HashMap<String,Long> associatedIdCache;
     // use this to decect when an error is persistent and we should not retry
     // the connection in a while.
     private Date lastManualRetryTimeStamp=null;
-    private String url,user,password;
-    private MonConnection daemonThread=null;
+    //private String url,user,password;
+    
+    
     
     public PostgreSQL_MonPersistence(String url,String user,String password) throws
             ClassNotFoundException, SQLException {
-               Class driver=Class.forName("org.postgresql.Driver");
+       super(url, user, password, jdbcDriver);
+               
        // url pattern is jdbc:postgresql:[//host[:port]/]database
        // store values; a restart may be needed.
-       this.url=url;this.user=user;this.password=password;
-       prepareConnection();
+       // this.url=url;this.user=user;this.password=password;
+       
+       super.strTestConnection="SELECT 1";
+       
+       prepareConnection();              
        associatedIdCache=new HashMap<String,Long>();
-       daemonThread=new MonConnection();
-       daemonThread.setDaemon(true);
-       daemonThread.start();
-
+       //monitorizationStart();
+       
     }
     
-    private void prepareConnection() 
+    /* @Override
+    protected void prepareConnection() 
             throws SQLException {
        Connection conTmp=
             DriverManager.getConnection(
-               url,user,password);
-       conTmp.setAutoCommit(true);
+               url,user,password); 
        
-       insertFQNMap=conTmp.prepareStatement("INSERT INTO fqn (fqn,host,plugin) VALUES (?,?,?)");
-       deleteFQNMap=conTmp.prepareStatement("DELETE FROM fqn WHERE host=? AND plugin=?");
-       deleteFQNMap=conTmp.prepareStatement("DELETE FROM fqn WHERE host=? AND plugin=?");
+       //conTmp.setAutoCommit(true);
+       
+       
+       // super.prepareConnection();
+       
+       //insertFQNMap=conTmp.prepareStatement("INSERT INTO fqn (fqn,host,plugin) VALUES (?,?,?)");
+       
+       /* deleteFQNMap=conTmp.prepareStatement("DELETE FROM fqn WHERE host=? AND plugin=?");
        deleteFQNMapPlugNull=conTmp.prepareStatement("DELETE FROM fqn WHERE host=? AND plugin IS NULL");
        searchFQN=conTmp.prepareStatement("SELECT fqn FROM fqn WHERE host=? AND plugin=?");
        searchFQNPlugNull=conTmp.prepareStatement("SELECT fqn FROM fqn WHERE host=? AND plugin IS NULL");
@@ -75,69 +82,18 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
                "WHERE (fqn=? OR fqn LIKE ?) AND status<>0");
        insertMeasure=conTmp.prepareStatement("INSERT INTO monitoringsample (datetime,"
                +"day,month,year,hour,minute,value,measure_type,unit,"+
-               "associatedObject_internalId) VALUES (?,?,?,?,?,?,?,?,?,?)");
-       testConnection=conTmp.prepareStatement("SELECT 1");
-       con=conTmp;
-    }
+               "associatedObject_internalId) VALUES (?,?,?,?,?,?,?,?,?,?)");  
+       //testConnection=getConnection().prepareStatement("SELECT 1");
+       //con=conTmp;
+    } */
     
-    private Long getAssociatedObjectId(String fqn) throws SQLException {
-        selectAssociatedId.setString(1, fqn);
-        ResultSet result=selectAssociatedId.executeQuery();
-        
-        if (!result.next()) {
-            // not found; if preffix is hostname, create entry, if error, 
-            // ignore entry.
-            result.close();
-            int pos=fqn.indexOf("replicas.");
-            if (pos==-1) return null;
-            pos=fqn.indexOf(".",pos+9);
-            if (pos==-1) return null;
-            String host=fqn.substring(0,pos);
-            selectAssociatedId.setString(1,host);
-            result=selectAssociatedId.executeQuery();
-            
-            if (!result.next()) { result.close(); return null; }
-            Long id=result.getLong(1);
-            result.close();
-            
-            insertNodeDirectory.setString(1, fqn);
-            insertNodeDirectory.setInt(2, 10);
-            insertNodeDirectory.setBigDecimal(3, BigDecimal.valueOf(id));
-            insertNodeDirectory.execute();
-            
-            result=insertNodeDirectory.getGeneratedKeys();
-            if (!result.next()) {result.close(); return null; }
-            
-        } 
-        Long id=result.getLong(1);
-        result.close();
-        return id;
-    }
 
+/*
     public void insertData(Date time, String fqn, String measuredType, String measureUnit, Number value) throws SQLException {
-         Long id=associatedIdCache.get(fqn);
-        if (id==null) {
-            id=getAssociatedObjectId(fqn);
-            if (id==null) return;
-        }
-                
-
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(time);
-        
-        insertMeasure.setTimestamp(1, new java.sql.Timestamp(time.getTime()));
-        insertMeasure.setInt(2,calendar.get(Calendar.DAY_OF_MONTH));
-        insertMeasure.setInt(3,calendar.get(Calendar.MONTH)+1);
-        insertMeasure.setInt(4,calendar.get(Calendar.YEAR));
-        insertMeasure.setInt(5,calendar.get(Calendar.HOUR));
-        insertMeasure.setInt(6,calendar.get(Calendar.MINUTE));
-        insertMeasure.setString(7, value.toString());
-        insertMeasure.setString(8, measuredType);
-        insertMeasure.setString(9, measureUnit);
-        insertMeasure.setBigDecimal(10, BigDecimal.valueOf(id));
-        insertMeasure.executeUpdate();
+  ---- En la clase base.       
     }
-
+*/
+    /*
     public void insertFQNMap(String fqn, String host, String pluginWithInstance) throws SQLException {
         insertFQNMap.setString(1, fqn);
         insertFQNMap.setString(2,host);
@@ -150,7 +106,8 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
         insertNodeDirectory.execute();
         return;
     }
-
+*/
+    /*
     public String searchFQN(String host,String pluginWithInstance) throws SQLException {
         String fqn=null;
         ResultSet rs=null;
@@ -171,7 +128,7 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
         return fqn;
         
     }
-
+*//*
     public void deleteFQNMap(String host, String pluginWithInstance) {
         try {
           String fqn=searchFQN(host,pluginWithInstance);  
@@ -191,8 +148,8 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
          } catch (SQLException ex) {
             Logger.getLogger(PostgreSQL_MonPersistence.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
+    }*/
+/*
     public void shutdown() {
         try {
             con.close();
@@ -203,9 +160,10 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
         if (daemonThread!=null)
             daemonThread.shutdown();
     }
-    
-    public boolean retry() {
+    */
+    /* public boolean retry() {
         // don't retry if there is a recent error
+        Connection con=getConnection();
         Date now=new Date();
         if (lastManualRetryTimeStamp!=null) {
           if ((now.getTime()-lastManualRetryTimeStamp.getTime())<
@@ -226,8 +184,8 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
             return false;
         }
         return true;
-    }
-    
+    } */
+    /*
     public class MonConnection extends Thread {
       private boolean shutdown=false;
       public void shutdown() {
@@ -256,15 +214,18 @@ public class PostgreSQL_MonPersistence implements MonPersistence {
                     continue;
                 }
                 try {
-                     if (testConnection()) continue;
-                     try { con.close(); } catch (Exception ex) {}
-                     prepareConnection();
+                    if (!testConnection()) reconnect();
+                     //if (testConnection()) continue;
+                     //try { con.close(); } catch (Exception ex) {}
+                     //prepareConnection();
                 } catch (SQLException ex) {
                     Logger.getLogger(PostgreSQL_MonPersistence.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException cnfe) {
+                    Logger.getLogger(PostgreSQL_MonPersistence.class.getName()).log(Level.SEVERE, null, cnfe);
                 }
              
           }
       }  
-    }
-  
+    }   */
+    
 }
