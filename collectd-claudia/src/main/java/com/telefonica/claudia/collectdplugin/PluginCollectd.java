@@ -19,6 +19,7 @@ import org.collectd.api.CollectdShutdownInterface;
 import org.collectd.api.CollectdWriteInterface;
 import org.collectd.api.DataSource;
 import org.collectd.api.OConfigItem;
+import org.collectd.api.OConfigValue;
 import org.collectd.api.ValueList;
 
 /**
@@ -34,36 +35,44 @@ public class PluginCollectd implements CollectdConfigInterface,
             new HashMap<String,String[]>();
     
     @SuppressWarnings("LeakingThisInConstructor")
-    public PluginCollectd(String configurationFile) throws IOException {
-        Collectd.registerWrite("ClaudiaCollector",this);
-        Collectd.registerConfig("ClaudiaCollector", this);
-        Collectd.registerFlush("ClaudiaCollector", this);
-        Collectd.registerShutdown("ClaudiaCollector", this);
+    public PluginCollectd() throws IOException {
+        
+        Collectd.registerConfig("collector", this);
+        Collectd.registerFlush("collector", this);
+        Collectd.registerShutdown("collector", this);
         
     }
     @Override
     public int config(OConfigItem ci) {
         
-        String collectorClass=null,collectorConfig=null,collectorJar=null;
+        String collectorClass=null,collectorConfig=null;
+        List<OConfigValue> collectorJars=null;
         for (OConfigItem item : ci.getChildren()) {
             if (item.getKey().equalsIgnoreCase("collectorclass")) 
                  collectorClass=item.getValues().get(0).toString();
             if (item.getKey().equalsIgnoreCase("collectorconfig")) 
                  collectorConfig=item.getValues().get(0).toString();
-            if (item.getKey().equalsIgnoreCase("collectorjar")) 
-                 collectorJar=item.getValues().get(0).toString();
+            if (item.getKey().equalsIgnoreCase("collectorjars")) 
+                 collectorJars=item.getValues();
         }
         try {
-            if (collectorJar==null) collector=
+            if (collectorJars==null) collector=
                     Class.forName(collectorClass).asSubclass(
                     CollectorI.class).newInstance();
             else {
-                URL urls[]={new URL(collectorJar)};
-                collector=Class.forName(collectorClass,true,
+                
+                URL urls[]=new URL[collectorJars.size()];
+                int cont=0;
+                for(OConfigValue jarPath : collectorJars) {
+                    urls[cont++]=new URL("file://"+jarPath);
+                } 
+                
+                collector=Class.forName(collectorClass,false,
                         URLClassLoader.newInstance(urls)).asSubclass(
                         CollectorI.class).newInstance();
             }
             collector.autoInjectDependencies(collectorConfig);
+            Collectd.registerWrite("collector",this);
             return 0;
         } catch (InstantiationException ex) {
             Logger.getLogger(PluginCollectd.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,6 +87,7 @@ public class PluginCollectd implements CollectdConfigInterface,
             Logger.getLogger(PluginCollectd.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
         }
+        
     }
 
     @Override
