@@ -43,13 +43,19 @@ public class JDBC_MonPersistence implements MonPersistence
                "associatedObject_internalId) VALUES (?,?,?,?,?,?,?,?,?,?)";
     protected String strTestConnection=null;
     
+    protected String strGetFNQMapCount="select count(1) as n from fqn";
+    
+    protected String strDeleteAllFQNMap="delete from fqn";
+    protected String strDeleteAllNodeDirectory="delete from nodedirectory";
+    protected String strDeleteAllMonitoringSample="delete from monitoringsample";
     
 // - pgsql: protected static String strInsertFQNMap="INSERT INTO fqn (fqn,host,plugin) VALUES (?,?,?)";
     private Connection con=null;
     private PreparedStatement insertFQNMap,deleteFQNMap,searchFQN,
             searchFQNPlugNull,deleteFQNMapPlugNull;
     private PreparedStatement selectAssociatedId,insertNodeDirectory;
-    private PreparedStatement insertMeasure,markNodeAsInactive;
+    private PreparedStatement insertMeasure,markNodeAsInactive, getFNQMapCount;
+    private PreparedStatement deleteAllFQNMap, deleteAllNodeDirectory, deleteAllMonitoringSample;
     private PreparedStatement testConnection=null;
     private HashMap<String,Long> associatedIdCache;
     
@@ -81,7 +87,13 @@ public class JDBC_MonPersistence implements MonPersistence
         markNodeAsInactive=con.prepareStatement(strMarkNodeAsInactive);
         insertMeasure=con.prepareStatement(strInsertMeasure);
         if (strTestConnection!=null) testConnection=con.prepareStatement(strTestConnection);
-        associatedIdCache=new HashMap<String,Long>();        
+        associatedIdCache=new HashMap<String,Long>();      
+        
+        deleteAllFQNMap=con.prepareStatement(strDeleteAllFQNMap);
+        deleteAllMonitoringSample=con.prepareStatement(strDeleteAllMonitoringSample);
+        deleteAllNodeDirectory=con.prepareStatement(strDeleteAllNodeDirectory);
+        getFNQMapCount=con.prepareStatement(strGetFNQMapCount);
+                
     }
 
         private Long getAssociatedObjectId(String fqn) throws SQLException {
@@ -240,7 +252,7 @@ public class JDBC_MonPersistence implements MonPersistence
      * 
      * @return 
      */
-    protected Connection getConnection() { return con; }
+    public Connection getConnection() { return con; }
     
     /**
      * Realiza la conexion con JDBC
@@ -291,6 +303,47 @@ public class JDBC_MonPersistence implements MonPersistence
         } catch (SQLException e) {
             return false;
         }
+    }
+    
+    /**
+     * Metodo para preubas unitarias - Se le pasa un FQN y devuelve el número de
+     * elementos que hay
+     * 
+     * @param fqn
+     * @return 
+     */
+    public long count(String fqn) throws SQLException {
+        long nfqn=-1l;
+        ResultSet rs=null;
+            
+        getFNQMapCount.execute();
+        rs=getFNQMapCount.getResultSet();
+        
+        if (rs.next()) {
+            nfqn=rs.getLong(1);
+        } 
+        
+        rs.close();
+        return nfqn;        
+    }
+    /**
+     * Metodo para pruebas unitarias - Se le pasa un FQN y devuelve el número de
+     * elementos que había en la tabla antes de borrarlos.
+     * 
+     * @param fqn
+     * @return 
+     */
+    public long purge(String fqn) throws SQLException {        
+        long res=count(fqn);
+        
+        System.out.println("Borrando Monitoring sample.....");
+        deleteAllMonitoringSample.execute();
+        System.out.println("Borrando FQM MAP.....");
+        deleteAllFQNMap.execute();          
+        System.out.println("Borrando Node Directory.....");
+        deleteAllNodeDirectory.execute();
+        
+        return res;
     }
     
     private MonConnection daemonThread=null;
