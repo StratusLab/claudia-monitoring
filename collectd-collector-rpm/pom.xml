@@ -175,6 +175,10 @@
 						<destination>mysql_monpersistence.jar</destination> 
 						</source> 
 						<source>
+						<location>target/dependency/servlet-api-2.5.jar</location>
+						<destination>servlet-api-2.5.jar</destination>
+						</source>
+						<source>
 						<location>
 						target/dependency/jetty-server-7.5.0.v20110901.jar
 						</location>
@@ -192,20 +196,6 @@
 						</source>
 					</sources>
 				</mapping> 
-<!--
-				<mapping> 
-					<directory>${app.home}/share/collectd/java/</directory> 
-					<filemode>644</filemode> 
-					<username>root</username> 
-					<groupname>root</groupname> 
-					<sources> 
-						<source> 
-						<location>target/dependency/collectd-api-5.0.0.jar</location> 
-						<destination>collectd-api.jar</destination> 
-						</source> 
-					</sources>
-				</mapping> 
--->
 				<mapping> 
 					<directory>${app.home}/share/collectd/java/</directory> 
 					<filemode>644</filemode> 
@@ -256,7 +246,7 @@
 				<mapping> 
 					<directory>${app.home}/etc</directory> 
 					 <configuration>noreplace</configuration>
-					<filemode>644</filemode> 
+					<filemode>755</filemode> 
 					<username>root</username> 
 					<groupname>root</groupname> 
 					<sources> 
@@ -279,7 +269,7 @@
 				<mapping> 
 					<directory>/usr/share/doc/collectd-collector/database</directory> 
 					 <configuration>noreplace</configuration>
-					<filemode>644</filemode> 
+					<filemode>755</filemode> 
 					<username>root</username> 
 					<groupname>root</groupname> 
 					<sources> 
