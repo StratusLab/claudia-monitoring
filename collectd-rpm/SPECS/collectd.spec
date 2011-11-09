@@ -45,7 +45,7 @@ cat > collectd.conf << EOF
 #
 Interval 30
 TypesDB "/opt/collectd/share/collectd/types.db"
-Include "/opt/collectd/etc/conf.d"
+Include "/opt/collectd/etc/conf.d/*.conf"
 EOF
 
 cat > basicprobes.conf << EOF
