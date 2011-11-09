@@ -20,7 +20,7 @@ public class AppTest   extends TestCase
      *
      * @param testName name of the test case
      */
-    private boolean enabled=true;
+    private boolean enabled=false;
     public AppTest( String testName ) throws SQLException
     {
         super( testName );

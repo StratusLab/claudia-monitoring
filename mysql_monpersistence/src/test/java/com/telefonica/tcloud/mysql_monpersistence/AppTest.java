@@ -26,10 +26,11 @@ public class AppTest
      *
      * @param testName name of the test case
      */
+    boolean doTest=false;
     public AppTest( String testName ) throws ClassNotFoundException, SQLException
     {
         super( testName );
-        
+        if (!doTest) return;
                 
         String dbURL="jdbc:mysql://localhost:3306/claudia";      
         JDBC_MonPersistence persistence = new MySQL_MonPersistence(dbURL, "claudia", "claudia");        
