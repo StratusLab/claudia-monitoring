@@ -25,7 +25,7 @@ import java.util.Properties;
 
 public class DInjector {
     
-    public static final String default_modules_path="/opt/monitoring/shared/modules/";
+    public static final String default_modules_path="/opt/monitoring/modules/";
     private URL[] jarList2URLs(String baseDir,String jarList) throws MalformedURLException {
       String jars[]=jarList.split(",");
       URL urls[]=new URL[jars.length];

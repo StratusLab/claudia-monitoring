@@ -166,10 +166,9 @@
 				<group>Development</group> 
 				<description>Maven Recipe: RPM Package.</description> 
 				<release>${RELEASE}</release> 
-				<prefix>/opt/collectd</prefix> 
 				<mappings> 
 				<mapping> 
-					<directory>${app.home}/share/collectd/java/</directory> 
+					<directory>${monitoring.home}/modules/</directory> 
 					<filemode>644</filemode> 
 					<username>root</username> 
 					<groupname>root</groupname> 
@@ -178,14 +177,6 @@
 						<location>target/dependency/db_collectd2fqn-1.0-SNAPSHOT.jar</location> 
 						<destination>db_collectd2fqn.jar</destination> 
 						</source> 
-					</sources>
-				</mapping> 
-				<mapping> 
-					<directory>${app.home}/share/collectd/java/</directory> 
-					<filemode>644</filemode> 
-					<username>root</username> 
-					<groupname>root</groupname> 
-					<sources> 
 						<source> 
 						<location>target/dependency/mysql_monpersistence-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
 						<destination>mysql_monpersistence.jar</destination> 
@@ -210,17 +201,9 @@
 						jetty-webapp.jar
 						</destination>
 						</source>
-					</sources>
-				</mapping> 
-				<mapping> 
-					<directory>${app.home}/share/collectd/java/</directory> 
-					<filemode>644</filemode> 
-					<username>root</username> 
-					<groupname>root</groupname> 
-					<sources> 
 						<source> 
-						<location>target/dependency/collectorinterfaces-1.0-SNAPSHOT.jar</location> 
-						<destination>collectorinterfaces.jar</destination> 
+						<location>target/dependency/org.apache.servicemix.bundles.spymemcached-2.5_2.jar</location> 
+						<destination>spymemcached-2.5_2.jar</destination>
 						</source> 
 					</sources>
 				</mapping> 
@@ -237,18 +220,6 @@
 						<source> 
 						<location>target/dependency/collectorexternalinterface-1.0-SNAPSHOT.jar</location> 
 						<destination>collectorexternalinterface.jar</destination>
-						</source> 
-					</sources>
-				</mapping> 
-				<mapping> 
-					<directory>${app.home}/share/collectd/java/</directory> 
-					<filemode>644</filemode> 
-					<username>root</username> 
-					<groupname>root</groupname> 
-					<sources> 
-						<source> 
-						<location>target/dependency/org.apache.servicemix.bundles.spymemcached-2.5_2.jar</location> 
-						<destination>spymemcached-2.5_2.jar</destination>
 						</source> 
 					</sources>
 				</mapping> 
