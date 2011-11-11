@@ -59,14 +59,6 @@
 							</sources>
 						</mapping>
 						<mapping>
-						      <directory>${app.home}/etc/conf.d</directory>
-							<filemode>755</filemode>
-							<username>root</username>
-							<groupname>root</groupname>
-							<sources>
-							</sources>
-						</mapping>
-						<mapping>
 							<directory>${app.home}/share/collectd/</directory>
 							<filemode>755</filemode>
 							<username>root</username>
