@@ -67,7 +67,7 @@ public class PluginCollectd implements CollectdConfigInterface,
                     urls[cont++]=new URL("file://"+jarPath);
                 } 
                 
-                collector=Class.forName(collectorClass,false,
+                collector=Class.forName(collectorClass,true,
                         URLClassLoader.newInstance(urls)).asSubclass(
                         CollectorI.class).newInstance();
             }
