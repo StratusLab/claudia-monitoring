@@ -19,9 +19,8 @@ public abstract class CollectdName2FQNMapFactory {
     public static CollectdName2FQNMap getConversor(String factoryClassName,URL[] jarList,
             LinkedHashMap<String,String[]> config) {
         try {
-            
-            URLClassLoader classLoader=URLClassLoader.newInstance(jarList);
-            
+            URLClassLoader classLoader=URLClassLoader.newInstance(jarList,
+                    CollectdName2FQNMapFactory.class.getClassLoader());
             CollectdName2FQNMapFactory factory=Class.forName(factoryClassName,
                     true,classLoader).asSubclass(
                       CollectdName2FQNMapFactory.class).newInstance();

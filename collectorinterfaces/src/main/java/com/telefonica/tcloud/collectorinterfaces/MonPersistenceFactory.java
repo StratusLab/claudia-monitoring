@@ -20,8 +20,7 @@ public abstract class MonPersistenceFactory {
             LinkedHashMap<String,String[]> config) {
         try {
             
-            URLClassLoader classLoader=URLClassLoader.newInstance(jarList);
-            
+            URLClassLoader classLoader=URLClassLoader.newInstance(jarList,MonPersistenceFactory.class.getClassLoader());
             MonPersistenceFactory factory=Class.forName(factoryClassName,
                     true,classLoader).asSubclass(
                       MonPersistenceFactory.class).newInstance();

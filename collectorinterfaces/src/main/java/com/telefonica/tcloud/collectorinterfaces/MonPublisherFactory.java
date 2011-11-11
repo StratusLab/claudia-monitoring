@@ -20,7 +20,8 @@ public  abstract class MonPublisherFactory {
             LinkedHashMap<String,String[]> config) {
         try {
             
-            URLClassLoader classLoader=URLClassLoader.newInstance(jarList);
+            URLClassLoader classLoader=URLClassLoader.newInstance(jarList,
+                    MonPublisherFactory.class.getClassLoader());
             
             MonPublisherFactory factory=Class.forName(factoryClassName,
                     true,classLoader).asSubclass(
