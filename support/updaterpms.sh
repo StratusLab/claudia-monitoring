@@ -1,5 +1,5 @@
 #!/bin/sh
-cd $(dirname $0)/..
-mvn clean; mvn install || exit 
-cd extended-probes-rpm ; mvn clean; mvn install || exit
+cd $(dirname $0)
+cd .. ; mvn clean; mvn install || exit 
+cd collectd-extendedprobes-rpm ; mvn clean; mvn install || exit
 cd ../collectd-collector-rpm ; mvn clean;  mvn install 
