@@ -26,11 +26,11 @@ public class AppTest
      *
      * @param testName name of the test case
      */
-    boolean doTest=false;
+    boolean enabled=false;
     public AppTest( String testName ) throws ClassNotFoundException, SQLException
     {
         super( testName );
-        if (!doTest) return;
+        if (!enabled) return;
                 
         String dbURL="jdbc:mysql://localhost:3306/claudia";      
         JDBC_MonPersistence persistence = new MySQL_MonPersistence(dbURL, "claudia", "claudia");        
@@ -41,10 +41,9 @@ public class AppTest
         persistence.purge("");
         long n0=persistence.count("");
         assert(n0==0);
-        System.out.println("La base de datos tiene:"+n0+" elementos despues de purge");
+         System.out.println("La base de datos tiene:"+n0+" elementos despues de purge");
 
         // Primer insert;
-                // Primer insert;
         String [] hosts={"collector", "desplegator"};
         
         String [] fqns={"es.tid.customers.cc1.services.monitoring.vees.collector.replicas.2",
@@ -61,17 +60,20 @@ public class AppTest
         n0=persistence.count("");
         assert(n0==4);
         System.out.println("La base de datos tiene:"+n0+" elementos despues de insert");
-        
+        int np=0;
         // Metemos datos...
-        for (int i=0; i<10000; i++) {
+        for (int i=0; i<20000; i++) {
             String fqn=fqns[(int)Math.round(Math.random())];
             String host=hosts[(int)Math.round(Math.random())];
             String plug=plugs[(int)Math.round(Math.random())];
             String testUnit=testUnits[(int) (Math.random() * testUnits.length) ];
             String testWhat=testNames[(int) (Math.random() * testNames.length) ];
-            
-            persistence.insertData(new Date(), fqn, testWhat, testUnit, (long)(Math.random()*100000l));        
-           // persistence.insertData(new Date(),fqn[0],"cpu","cycles", (long)(Math.random()*100000l)); 
+            try {            
+                persistence.insertData(new Date(), fqn, testWhat, testUnit, (long)(Math.random()*100000l));                   
+            } catch (SQLException sqle) {
+                System.out.println("ErrCode: " + sqle.getErrorCode() + " Perdidas: " + (++np));
+                try { Thread.sleep(3000); } catch (Exception e) {}
+            }
         }
     }
 

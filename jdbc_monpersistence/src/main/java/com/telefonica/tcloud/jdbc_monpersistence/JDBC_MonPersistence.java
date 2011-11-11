@@ -19,6 +19,9 @@ import java.util.logging.Logger;
  */
 public class JDBC_MonPersistence implements MonPersistence
 {
+    public static final int PAUSE_MILLISECONDS_BEFORE_MANUAL_RETRIES=6000;
+    public static final int PAUSE_MILLISECONDS_BEFORE_AUTOMATIC_CHECKS=6000;
+    
     protected String strInsertFQNMap="INSERT INTO fqn (fqn,host,plugin) VALUES (?,?,?)";
     protected String strDeleteFQNMap="DELETE FROM fqn WHERE host=? AND plugin=?";
     protected String strDeleteFQNMapPlugNull="DELETE FROM fqn WHERE host=? AND plugin IS NULL";
@@ -60,10 +63,10 @@ public class JDBC_MonPersistence implements MonPersistence
     private HashMap<String,Long> associatedIdCache;
     
     //FileWriter fw=null;
-    private String user;
-    private String password;
-    private String url;
-    private String driverName;
+    private String user=null;
+    private String password=null;
+    private String url=null;
+    private String driverName=null;
     
     public JDBC_MonPersistence (String url,String user, String password, 
                                 String driverName) 
@@ -86,17 +89,20 @@ public class JDBC_MonPersistence implements MonPersistence
         insertNodeDirectory=con.prepareStatement(strInsertNodeDirectory,Statement.RETURN_GENERATED_KEYS);
         markNodeAsInactive=con.prepareStatement(strMarkNodeAsInactive);
         insertMeasure=con.prepareStatement(strInsertMeasure);
-        if (strTestConnection!=null) testConnection=con.prepareStatement(strTestConnection);
+        if (strTestConnection!=null) {
+               testConnection=con.prepareStatement(strTestConnection);
+               System.out.println("textConnection es "+strTestConnection);
+        }
+        
         associatedIdCache=new HashMap<String,Long>();      
         
         deleteAllFQNMap=con.prepareStatement(strDeleteAllFQNMap);
         deleteAllMonitoringSample=con.prepareStatement(strDeleteAllMonitoringSample);
         deleteAllNodeDirectory=con.prepareStatement(strDeleteAllNodeDirectory);
-        getFNQMapCount=con.prepareStatement(strGetFNQMapCount);
-                
+        getFNQMapCount=con.prepareStatement(strGetFNQMapCount);                
     }
 
-        private Long getAssociatedObjectId(String fqn) throws SQLException {
+    private Long getAssociatedObjectId(String fqn) throws SQLException {
         selectAssociatedId.setString(1, fqn);
         ResultSet result=selectAssociatedId.executeQuery();
         
@@ -153,26 +159,7 @@ public class JDBC_MonPersistence implements MonPersistence
         insertMeasure.setString(9, measureUnit);
         insertMeasure.setBigDecimal(10, BigDecimal.valueOf(id));
         insertMeasure.executeUpdate();
-        
-        /*
-        StringBuilder insert=new StringBuilder(
-            "INSERT INTO monitoringsample (datetime,day,month,year,hour,minute,"
-           +"value,measure_type,unit,associatedObject_internalId) VALUES ('");
-        insert.append(new java.sql.Timestamp(time.getTime()));
-        insert.append("',").append(calendar.get(Calendar.DAY_OF_MONTH));
-        insert.append(',').append(calendar.get(Calendar.MONTH)).append(',');
-        insert.append(calendar.get(Calendar.YEAR)).append(',');
-        insert.append(calendar.get(Calendar.HOUR)).append(',');
-        insert.append(calendar.get(Calendar.MINUTE)).append(",'").append(value);
-        insert.append("','").append(measureType).append("','");
-        insert.append(measureUnit).append("',");
-        insert.append(id).append(");");
-
-        Statement st=con.createStatement();
-        st.executeUpdate(insert.toString());
-        st.close();
-         * 
-         */        
+             
     }
 
     public void insertFQNMap(String fqn, String host, String pluginWithInstance) throws SQLException {
@@ -241,10 +228,10 @@ public class JDBC_MonPersistence implements MonPersistence
     public void shutdown() {
         try {
             con.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             
         }
-        con=null;
+        //con=null;
     }
     
     /**
@@ -262,11 +249,13 @@ public class JDBC_MonPersistence implements MonPersistence
      * @throws SQLException 
      */
     private Connection connect()  throws ClassNotFoundException, SQLException {
-        if (con != null) shutdown();
-        Class driver=Class.forName(driverName);
+        if (con != null && !con.isClosed()) {
+             shutdown();
+        }
+        Class driver=Class.forName(driverName);                          
         con= DriverManager.getConnection(
-               url,user,password);
-        con.setAutoCommit(true);
+               url,user,password);        
+        con.setAutoCommit(true);       
         return con;
     }
     
@@ -279,14 +268,17 @@ public class JDBC_MonPersistence implements MonPersistence
      */
     protected Connection reconnect() throws ClassNotFoundException, SQLException {
         shutdown();
-        return connect();
+        Connection c=connect();
+        prepareConnection();
+        return c;
     }
     
     /**
      * 
      * @return 
      */
-    protected boolean testConnection()  {
+    protected boolean testConnection()  {       
+        if (con==null) return false;
         try {
             if (testConnection==null) {
                 return con.isValid(2);
@@ -336,23 +328,40 @@ public class JDBC_MonPersistence implements MonPersistence
     public long purge(String fqn) throws SQLException {        
         long res=count(fqn);
         
-        System.out.println("Borrando Monitoring sample.....");
-        deleteAllMonitoringSample.execute();
-        System.out.println("Borrando FQM MAP.....");
-        deleteAllFQNMap.execute();          
-        System.out.println("Borrando Node Directory.....");
+        deleteAllMonitoringSample.execute();        
+        deleteAllFQNMap.execute();                  
         deleteAllNodeDirectory.execute();
         
         return res;
     }
     
-    private MonConnection daemonThread=null;
-    /**
-     *  
+     /**
+     * Clase interna de PostgreSQL para
      */
-    protected void monitorizationStart() {
-        daemonThread=new MonConnection();
-        daemonThread.setDaemon(true);
-        daemonThread.start();
+    public class MonConnection_TestConnection extends Thread {
+      private boolean shutdown=false;
+      public void shutdown() {
+          shutdown=true;
+          this.interrupt();
+      }
+      
+      @Override
+      @SuppressWarnings("SleepWhileInLoop")
+      public void run() {
+          while (!shutdown) {
+                try {
+                    Thread.sleep(PAUSE_MILLISECONDS_BEFORE_AUTOMATIC_CHECKS);
+                } catch (InterruptedException ex) {
+                    continue;
+                }
+                try {                    
+                    if (!testConnection()) reconnect();
+                } catch (SQLException ex) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException cnfe) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, cnfe);
+                }
+          }
+      }
     }
 }
