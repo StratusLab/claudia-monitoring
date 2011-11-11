@@ -1,5 +1,6 @@
 package com.telefonica.tcloud.mysql_collectd2fqn;
 
+import com.telefonica.tcloud.db_collectd2fqn.Collectd2FQNMapDB;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -18,6 +19,7 @@ public class AppTest
     public AppTest( String testName )
     {
         super( testName );
+        Collectd2FQNMapDB map=new Collectd2FQNMapDB();
     }
 
     /**
