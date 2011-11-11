@@ -168,8 +168,8 @@
 				<release>${RELEASE}</release> 
 				<mappings> 
 				<mapping> 
-					<directory>${monitoring.home}/modules/</directory> 
-					<filemode>644</filemode> 
+					<directory>${monitoring.home}/modules</directory> 
+					<filemode>755</filemode> 
 					<username>root</username> 
 					<groupname>root</groupname> 
 					<sources> 
