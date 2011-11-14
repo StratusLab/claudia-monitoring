@@ -117,12 +117,13 @@
       <module>collectorinterfaces</module>
       <module>jdbc_monpersistence</module>
       <module>mysql_monpersistence</module>
+      <module>postgresql_monpersistence</module>
       <module>registerfqn4monitoring_ws</module>
       <module>db_collectd2fqn</module>
+      <module>collectorexternalinterface</module>
+      <module>moncollector</module>
       <module>collectd-api</module>
       <module>collectd-claudia</module>
-    <module>moncollector</module>
-    <module>collectorexternalinterface</module>
-    <module>collectdprotocol</module>
+      <module>collectdprotocol</module>
   </modules>
 </project>
