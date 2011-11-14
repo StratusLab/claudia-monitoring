@@ -280,7 +280,7 @@
 					<groupname>root</groupname> 
 					<sources> 
 						<source> 
-						<location>${moncollector.base}/opt/monitoring/conf/monitoring.properties</location> 
+						<location>${moncollector.base}/opt/monitoring/conf</location> 
 						</source> 
 					</sources>
 		                 </mapping>

@@ -24,7 +24,7 @@ public class IntegrationTest extends TestCase {
     Collector collector=null;
     // only enable this test if you have a local installation. Disable with
     // continous integration.
-    boolean enabled=false;
+    boolean enabled=true;
     public IntegrationTest(String testName) {
         super(testName);
     }
@@ -37,10 +37,10 @@ public class IntegrationTest extends TestCase {
         Properties properties=new Properties();
         
         properties.setProperty("modules.path","/opt/monitoring/modules/");
-        properties.setProperty("measuresfilter.path", "/opt/collectd/etc/filter.conf");
-        properties.setProperty("hostfilter.path", "/opt/collectd/etc/hostFilter.conf");
+        properties.setProperty("measuresfilter.path", "/opt/monitoring/conf/filter.conf");
+        properties.setProperty("hostfilter.path", "/opt/monitoring/conf/hostFilter.conf");
         //properties.setProperty("publisher.class","");
-        //properties.setProperty("persistence.class","com.telefonica.tcloud.mysql_monpersistence.MySQL_MonPersistenceFactory");
+        properties.setProperty("persistence.class","com.telefonica.tcloud.mysql_monpersistence.MySQL_MonPersistenceFactory");
         properties.setProperty("persistence.jars","mysql_monpersistence.jar");
         properties.setProperty("conversor2fqn.class","com.telefonica.tcloud.db_collectd2fqn.Collectd2FQNMapDBFactory");
         properties.setProperty("conversor2fqn.jars",
