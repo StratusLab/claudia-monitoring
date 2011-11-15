@@ -79,7 +79,7 @@ public class JDBC_MonPersistence implements MonPersistence
         con=connect();
     }
     
-    protected void prepareConnection() throws SQLException {
+    synchronized protected void prepareConnection() throws SQLException {
         insertFQNMap=con.prepareStatement(strInsertFQNMap);
         deleteFQNMap=con.prepareStatement(strDeleteFQNMap);
         deleteFQNMapPlugNull=con.prepareStatement(strDeleteFQNMapPlugNull);
@@ -102,7 +102,7 @@ public class JDBC_MonPersistence implements MonPersistence
         getFNQMapCount=con.prepareStatement(strGetFNQMapCount);                
     }
 
-    private Long getAssociatedObjectId(String fqn) throws SQLException {
+   synchronized private Long getAssociatedObjectId(String fqn) throws SQLException {
         selectAssociatedId.setString(1, fqn);
         ResultSet result=selectAssociatedId.executeQuery();
         
@@ -137,7 +137,7 @@ public class JDBC_MonPersistence implements MonPersistence
         return id;
     }
     
-    public void insertData(Date time, String fqn, String measuredType, 
+    synchronized public void insertData(Date time, String fqn, String measuredType, 
                         String measureUnit, Number value) throws SQLException {
         Long id=associatedIdCache.get(fqn);
         if (id==null) {
@@ -162,7 +162,7 @@ public class JDBC_MonPersistence implements MonPersistence
              
     }
 
-    public void insertFQNMap(String fqn, String host, String pluginWithInstance) throws SQLException {
+    synchronized public void insertFQNMap(String fqn, String host, String pluginWithInstance) throws SQLException {
         insertFQNMap.setString(1, fqn);
         insertFQNMap.setString(2,host);
         insertFQNMap.setString(3,pluginWithInstance);
@@ -175,7 +175,7 @@ public class JDBC_MonPersistence implements MonPersistence
         insertNodeDirectory.execute();        
     }
 
-    public String searchFQN(String host, String pluginWithInstance) throws SQLException {
+    synchronized public String searchFQN(String host, String pluginWithInstance) throws SQLException {
         String fqn=null;
         ResultSet rs=null;
         if (pluginWithInstance==null||pluginWithInstance.isEmpty()) {
@@ -200,7 +200,7 @@ public class JDBC_MonPersistence implements MonPersistence
      * @param host
      * @param pluginWithInstance 
      */
-    public void deleteFQNMap(String host, String pluginWithInstance) {
+    synchronized public void deleteFQNMap(String host, String pluginWithInstance) {
        try {
           String fqn=searchFQN(host,pluginWithInstance);  
           if (pluginWithInstance==null ||pluginWithInstance.isEmpty()) {
@@ -225,7 +225,7 @@ public class JDBC_MonPersistence implements MonPersistence
     /**
      * Cierra la conexión.
      */
-    public void shutdown() {
+    synchronized public void shutdown() {
         try {
             con.close();
         } catch (Exception ex) {
@@ -239,7 +239,7 @@ public class JDBC_MonPersistence implements MonPersistence
      * 
      * @return 
      */
-    public Connection getConnection() { return con; }
+    synchronized public Connection getConnection() { return con; }
     
     /**
      * Realiza la conexion con JDBC
@@ -248,7 +248,7 @@ public class JDBC_MonPersistence implements MonPersistence
      * @throws ClassNotFoundException
      * @throws SQLException 
      */
-    private Connection connect()  throws ClassNotFoundException, SQLException {
+    synchronized private Connection connect()  throws ClassNotFoundException, SQLException {
         if (con != null && !con.isClosed()) {
              shutdown();
         }
@@ -266,18 +266,18 @@ public class JDBC_MonPersistence implements MonPersistence
      * @throws ClassNotFoundException
      * @throws SQLException 
      */
-    protected Connection reconnect() throws ClassNotFoundException, SQLException {
+    synchronized protected Connection reconnect() throws ClassNotFoundException, SQLException {
         shutdown();
-        Connection c=connect();
+        connect();
         prepareConnection();
-        return c;
+        return con;
     }
     
     /**
      * 
      * @return 
      */
-    protected boolean testConnection()  {       
+    synchronized protected boolean testConnection()  {       
         if (con==null) return false;
         try {
             if (testConnection==null) {
