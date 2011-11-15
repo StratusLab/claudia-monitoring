@@ -5,6 +5,7 @@
 package com.telefonica.tcloud.collectorinterfaces;
 
 import java.util.LinkedHashMap;
+import java.util.Properties;
 
 
 /**
@@ -28,7 +29,7 @@ public interface CollectdName2FQNMap {
          * 
          * @param config a object with the configuration
          */
-    public void setConfig(LinkedHashMap<String,String[]> config);    
+    public void setConfig(Properties config);    
     
     public void setMonPersistence(MonPersistence monPersistence);
     

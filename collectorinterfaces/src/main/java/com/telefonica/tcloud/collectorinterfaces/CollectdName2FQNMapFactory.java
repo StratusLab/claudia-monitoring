@@ -6,7 +6,7 @@ package com.telefonica.tcloud.collectorinterfaces;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * @author jomar
  */
 public abstract class CollectdName2FQNMapFactory {
-    public abstract CollectdName2FQNMap getConversor(LinkedHashMap<String,String[]> config);
+    public abstract CollectdName2FQNMap getConversor(Properties config);
     public static CollectdName2FQNMap getConversor(String factoryClassName,URL[] jarList,
-            LinkedHashMap<String,String[]> config) {
+            Properties config) {
         try {
             URLClassLoader classLoader=URLClassLoader.newInstance(jarList,
                     CollectdName2FQNMapFactory.class.getClassLoader());
@@ -31,7 +31,7 @@ public abstract class CollectdName2FQNMapFactory {
         }
     }
     public static CollectdName2FQNMap getConversor(String factoryClassName,
-            LinkedHashMap<String,String[]> config) {
+            Properties config) {
         try {
             CollectdName2FQNMapFactory factory=Class.forName(factoryClassName).asSubclass(
                                     CollectdName2FQNMapFactory.class).newInstance();

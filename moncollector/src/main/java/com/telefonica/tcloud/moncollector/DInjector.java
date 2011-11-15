@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import java.util.Properties;
 
 /**
@@ -44,14 +43,8 @@ public class DInjector {
     }
     public void inject(Properties properties,Collector collector) throws
             IOException  {
-        LinkedHashMap<String,String[]> configuration=new LinkedHashMap();
         MonPersistence monPersistence=null;
                 
-        for(String key : properties.stringPropertyNames()) {
-            String values[]=new String[1];
-            values[0]=properties.getProperty(key);
-            configuration.put(key, values);
-        }
         
         String publishOnly=properties.getProperty("publishonly");
         String modules=properties.getProperty("modules.path");
@@ -74,7 +67,7 @@ public class DInjector {
             URL jarURLs[]=jarList2URLs(modules,publisherJars);
             
             MonPublisher monPublisher=MonPublisherFactory.getPublisher(
-                    publisher,jarURLs,configuration);
+                    publisher,jarURLs,properties);
             collector.setMonPublisher(monPublisher);
                     
         } else collector.setMonPublisher(null);
@@ -83,7 +76,7 @@ public class DInjector {
             URL jarURLs[]=jarList2URLs(modules,persistenceJars);
             collector.setMonPersistence(monPersistence=
                 MonPersistenceFactory.getPersistence(persistence, jarURLs,
-                    configuration)
+                    properties)
                     );
         } else collector.setMonPersistence(null);
         if (conversor!=null) {
@@ -91,7 +84,7 @@ public class DInjector {
             String conversorJars=properties.getProperty("conversor2fqn.jars");
             URL jarURLs[]=jarList2URLs(modules,conversorJars);
             CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
-                    conversor, jarURLs, configuration);
+                    conversor, jarURLs, properties);
             map.setMonPersistence(monPersistence);
             collector.setConversor2FQN(map);
                     

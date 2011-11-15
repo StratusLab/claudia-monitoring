@@ -6,7 +6,7 @@ package com.telefonica.tcloud.collectorinterfaces;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * @author jomar
  */
 public  abstract class MonPublisherFactory {
-    public abstract MonPublisher getPublisher(LinkedHashMap<String,String[]> config);
+    public abstract MonPublisher getPublisher(Properties config);
         public static MonPublisher getPublisher(String factoryClassName,URL[] jarList,
-            LinkedHashMap<String,String[]> config) {
+            Properties config) {
         try {
             
             URLClassLoader classLoader=URLClassLoader.newInstance(jarList,
@@ -33,7 +33,7 @@ public  abstract class MonPublisherFactory {
         }
     }
     public static MonPublisher getPublisher(String factoryClassName,
-            LinkedHashMap<String,String[]> config) {
+            Properties config) {
         try {
             MonPublisherFactory factory=Class.forName(factoryClassName).asSubclass(
                                     MonPublisherFactory.class).newInstance();

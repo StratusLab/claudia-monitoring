@@ -6,7 +6,7 @@ package com.telefonica.tcloud.moncollector;
 
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
-import java.util.LinkedHashMap;
+import java.util.Properties;
 
 
 
@@ -16,14 +16,14 @@ import java.util.LinkedHashMap;
  */
 public class CollectdName2FQNDefaultImpl implements 
         CollectdName2FQNMap {
-    private LinkedHashMap<String,String[]> config=null;
+    private Properties config=null;
     //private MonPersistence monPersistence=null;
     public CollectdName2FQNDefaultImpl() {
          config=null;
     }
     
     @Override
-    public void setConfig(LinkedHashMap<String,String[]> config) { 
+    public void setConfig(Properties config) { 
         this.config=config;
     }
     @Override

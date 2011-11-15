@@ -8,6 +8,7 @@ package com.telefonica.tcloud.db_collectd2fqn;
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.spy.memcached.AddrUtil;
@@ -74,25 +75,17 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
     
 
     @Override
-    public void setConfig(LinkedHashMap<String, String[]> config) {
-      webserver=new WebServerThread(8080);    
+    public void setConfig(Properties config) {
+      String port=config.getProperty("webserverport");
+      webserver=new WebServerThread(port==null?8080:Integer.decode(port));    
       webserver.setDaemon(true);
       webserver.start();
 
       try {
-            
-            String memcachedServers[]=config.get("memcachedservers");
-            String servers=null;
-            if (memcachedServers==null||memcachedServers.length==0)
-                servers="localhost:11211";
-            else {
-                servers=memcachedServers[0];
-                boolean first=true;
-                for (String s : memcachedServers) {
-                    if (first) {first=false; continue; }
-                    servers=servers+" "+s;
-                }
-            }
+            //space separated list of servers.
+            String servers=config.getProperty("memcachedservers");
+            if (servers==null) servers="localhost:11211";
+           
             memcachedClient=new MemcachedClient(new BinaryConnectionFactory(),
                                                AddrUtil.getAddresses(servers));
       } catch (Exception ex) {

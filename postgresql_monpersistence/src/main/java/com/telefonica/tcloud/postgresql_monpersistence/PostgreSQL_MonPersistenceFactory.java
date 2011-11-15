@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,10 +26,10 @@ public class PostgreSQL_MonPersistenceFactory extends MonPersistenceFactory {
     private PreparedStatement insertMeasure,markNodeAsInactive;
     private HashMap<String,Long> associatedIdCache;
     @Override
-    public MonPersistence getPersistence(LinkedHashMap<String, String[]> config) {
+    public MonPersistence getPersistence(Properties config) {
         try {
-            return new PostgreSQL_MonPersistence(config.get("pgsqlurl")[0],
-                    config.get("pgsqluser")[0],config.get("pgsqlpassword")[0]);
+            return new PostgreSQL_MonPersistence(config.getProperty("pgsqlurl"),
+                    config.getProperty("pgsqluser"),config.getProperty("pgsqlpassword"));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PostgreSQL_MonPersistenceFactory.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

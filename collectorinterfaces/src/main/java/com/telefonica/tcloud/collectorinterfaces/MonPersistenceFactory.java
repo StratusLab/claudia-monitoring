@@ -7,6 +7,7 @@ package com.telefonica.tcloud.collectorinterfaces;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,9 +16,10 @@ import java.util.logging.Logger;
  * @author jomar
  */
 public abstract class MonPersistenceFactory {
-    public abstract MonPersistence getPersistence(LinkedHashMap<String,String[]> config);
+   // public abstract MonPersistence getPersistence(Properties config);
+    public abstract MonPersistence getPersistence(Properties config);
     public static MonPersistence getPersistence(String factoryClassName,URL[] jarList,
-            LinkedHashMap<String,String[]> config) {
+            Properties config) {
         try {
             
             URLClassLoader classLoader=URLClassLoader.newInstance(jarList,MonPersistenceFactory.class.getClassLoader());
@@ -32,7 +34,7 @@ public abstract class MonPersistenceFactory {
     }
 
     public static MonPersistence getPersistence(String factoryClassName,
-            LinkedHashMap<String,String[]> config) {
+            Properties config) {
         try {
             MonPersistenceFactory factory=Class.forName(factoryClassName).asSubclass(
                                     MonPersistenceFactory.class).newInstance();

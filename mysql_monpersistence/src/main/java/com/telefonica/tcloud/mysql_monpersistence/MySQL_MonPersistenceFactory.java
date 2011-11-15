@@ -7,7 +7,7 @@ package com.telefonica.tcloud.mysql_monpersistence;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistenceFactory;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,15 +18,12 @@ import java.util.logging.Logger;
 public class MySQL_MonPersistenceFactory extends MonPersistenceFactory {
     
     @Override
-    public MonPersistence getPersistence(LinkedHashMap<String, String[]> config) {
+    public MonPersistence getPersistence(Properties config) {
         try {
-            System.out.println(config.get("mysqlurl")[0]+
-                    config.get("mysqluser")[0]+
-                    config.get("mysqlpassword")[0]);
                     
-            return new MySQL_MonPersistence(config.get("mysqlurl")[0],
-                    config.get("mysqluser")[0],
-                    config.get("mysqlpassword")[0]);
+            return new MySQL_MonPersistence(config.getProperty("mysqlurl"),
+                    config.getProperty("mysqluser"),
+                    config.getProperty("mysqlpassword"));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MySQL_MonPersistenceFactory.class.getName()).log(Level.SEVERE, null, ex);
             return null;

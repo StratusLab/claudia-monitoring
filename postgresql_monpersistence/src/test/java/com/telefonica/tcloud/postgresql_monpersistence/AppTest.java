@@ -5,7 +5,7 @@ import com.telefonica.tcloud.collectorinterfaces.MonPersistenceFactory;
 import com.telefonica.tcloud.jdbc_monpersistence.JDBC_MonPersistence;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.LinkedHashMap;
+import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -25,13 +25,10 @@ public class AppTest   extends TestCase
     {
         super( testName );
         if (!enabled) return;
-        LinkedHashMap<String,String[]> config=new LinkedHashMap<String,String[]>();
-        String url[]={"jdbc:postgresql://localhost/monitoring"};
-        String user[]={"claudia"};
-        String password[]={"ClaudiaPass"};
-        config.put("pgsqlurl",url);
-        config.put("pgsqluser",user);
-        config.put("pgsqlpassword",password);
+        Properties config=new Properties();
+        config.setProperty("pgsqlurl","jdbc:postgresql://localhost/monitoring");
+        config.setProperty("pgsqluser","claudia");
+        config.setProperty("pgsqlpassword","ClaudiaPass");
                 
         MonPersistence pers= MonPersistenceFactory.getPersistence(
          "com.telefonica.tcloud.postgresql_monpersistence.PostgreSQL_MonPersistenceFactory"

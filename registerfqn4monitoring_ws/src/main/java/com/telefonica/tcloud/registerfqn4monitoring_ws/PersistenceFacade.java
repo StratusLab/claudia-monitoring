@@ -35,11 +35,7 @@ public class PersistenceFacade  {
         try {
             config.load(new FileReader("/opt/monitoring/conf/monitoring.properties"));
             
-            for (java.util.Map.Entry<Object,Object> entry : config.entrySet()) {
-                String arrayString[]=new String[1];
-                arrayString[0]=entry.getValue().toString();
-                configHM.put(entry.getKey().toString(),arrayString);
-            }
+            
             String className=config.getProperty("persistence.class");
             String jars=config.getProperty("persistence.jars");
             if (jars!=null) {
@@ -47,10 +43,10 @@ public class PersistenceFacade  {
                 URL urls[]=jarList2URLs(dir==null?default_modules_path:dir
                         ,jars);
                 persistence=MonPersistenceFactory.getPersistence(className,urls,
-                        configHM);
+                        config);
             } else   
                 persistence=MonPersistenceFactory.getPersistence(
-                        className,configHM);
+                        className,config);
             
         } catch (IOException ex) {
             Logger.getLogger(ItemResource.class.getName()).log(Level.SEVERE, null, ex);
