@@ -1,0 +1,19 @@
+--- src/java.c.orig	2011-11-14 19:27:31.664293310 +0100
++++ src/java.c	2011-11-14 19:40:52.770293696 +0100
+@@ -21,6 +21,7 @@
+  *   Justo Alonso Achaques <justo.alonso at gmail.com>
+  **/
+ 
++#define CDTIME_T_TO_MS_JAVA(t)  ((long long)        (((double) (t))  / 1073741.824))
+ #include "collectd.h"
+ #include "plugin.h"
+ #include "common.h"
+@@ -809,7 +810,7 @@
+ #undef SET_STRING
+ 
+   /* Set the `time' member. Java stores time in milliseconds. */
+-  status = ctoj_long (jvm_env, (jlong) CDTIME_T_TO_MS (vl->time),
++  status = ctoj_long (jvm_env, (jlong) CDTIME_T_TO_MS_JAVA (vl->time),
+       c_valuelist, o_valuelist, "setTime");
+   if (status != 0)
+   {

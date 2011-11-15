@@ -8,8 +8,9 @@ Summary:        collectd monitoring solution
 Group:		daemons
 License:	GPL v2.0+
 URL:		www.collectd.org
-Source0:	http://www.collectd.org/files/collectd-5.0.1.tar.gz
+Source0:	http://www.collectd.org/files/collectd-%{version}.tar.gz
 Patch0:         confdir.patch
+Patch1:         longtime.patch
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:	perl-ExtUtils-MakeMaker, python-devel
 #Requires:	
@@ -139,6 +140,7 @@ esac
 EOF
 
 %patch0
+%patch1
 
 %build
 test -n "$JAVA_HOME" || export JAVA_HOME=/usr/java/jdk1.6.0_27

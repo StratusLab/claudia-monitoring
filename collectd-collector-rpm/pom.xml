@@ -263,7 +263,7 @@
 					</sources>
 				</mapping> 
 				<mapping> 
-					<directory>${monitoring.home}/shared</directory> 
+					<directory>${monitoring.home}/share</directory> 
 					<filemode>655</filemode> 
 					<username>root</username> 
 					<groupname>root</groupname> 
@@ -271,6 +271,9 @@
 						<source> 
 						<location>target/dependency/registerfqn4monitoring_ws-1.0-SNAPSHOT.war</location> 
 						</source> 
+					        <source>
+					        <location>${moncollector.base}/opt/monitoring/share</location>
+					        </source>
 					</sources>
 				</mapping> 
 				<mapping> 
