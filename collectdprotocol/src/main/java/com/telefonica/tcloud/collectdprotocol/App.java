@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,7 +86,7 @@ public class App
                         }
                     }
                 case 7: /*interval*/ break;
-                case 8: timestamp=ByteBuffer.wrap(stream,pos+4,8).getLong();
+                case 8: timestamp=ByteBuffer.wrap(stream,pos+4,8).getLong()<<30;
                         break;
                 case 9: interval=ByteBuffer.wrap(stream,pos+4,8).getLong();
                         break;
@@ -100,7 +101,7 @@ public class App
         }
         try {
             collector.write(host, plugin, pluginInstance, type, typeInstance, 
-                    dataSourcesByType.get(type), values, timestamp);
+                    dataSourcesByType.get(type), values, new Date(timestamp));
         } catch (Exception ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }

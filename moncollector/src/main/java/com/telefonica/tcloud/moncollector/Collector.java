@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,7 +30,8 @@ public class Collector implements CollectorI {
     // persistence layer may be used for fqn mapping, therefore 
     // if you don't want to save data is better to tell using publishOnly
     private boolean publishOnly=false;
-    
+    private Logger logger=Logger.getLogger("monitoring.Collector");
+   
     public void setMonPersistence(MonPersistence monPersistence) {
         persistence=monPersistence;
     }
@@ -60,8 +63,10 @@ public class Collector implements CollectorI {
     @Override
     public void write(String host,String plugin,String pluginInstance,
             String type,String typeInstance,String dataSources[],
-            List<Number> values,long timestamp) throws Exception {
+            List<Number> values,Date timestamp) throws Exception {
         StringBuilder errorMessage=new StringBuilder();
+        
+        
         
         if (hostFilter!=null && !hostFilter.accept(host)) return;
         if (filter!=null && !filter.accept(plugin,pluginInstance)) 
@@ -72,10 +77,9 @@ public class Collector implements CollectorI {
         Iterator<MeasureType> itMT=measureTypes.getMeauresTypeFromDataSources(
                   type,typeInstance,dataSources).iterator();
                   
-          
+        
         for (Number n: values) {
               MeasureType measureType=itMT.next();
-              Date date=new Date(timestamp);
               if (measureType==null) continue;
               // only get fqn if the measure is used.
               if (fqn==null) {
@@ -84,16 +88,21 @@ public class Collector implements CollectorI {
                   if (fqn==null) return;
               }
               if (!publishOnly && persistence!=null) try {
+                logger.log(Level.INFO, "Received: {0}:{1}_{2};{3}_{4}",
+                   new Object[]{timestamp, plugin, pluginInstance, type, typeInstance});
         
-                persistence.insertData(date, fqn,
+                persistence.insertData(timestamp, fqn,
                         measureType.getMeasureType(),measureType.getMeasureUnit()
                         ,n);
+                logger.log(Level.INFO, "Saved: {0}:{1}_{2};{3}_{4}",
+                   new Object[]{timestamp, plugin, pluginInstance, type, typeInstance});
+
               } catch (SQLException ex) {
                 errorMessage.append("error saving data to database ");
                 errorMessage.append(ex.toString());
               }
               if (publishService!=null)
-                publishService.publish(date, fqn, measureType.getMeasureType(),
+                publishService.publish(timestamp, fqn, measureType.getMeasureType(),
                       measureType.getMeasureUnit(), n);
               
               if (errorMessage.length()!=0) throw new Exception(

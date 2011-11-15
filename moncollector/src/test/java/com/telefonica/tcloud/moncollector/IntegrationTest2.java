@@ -22,7 +22,7 @@ public class IntegrationTest2 extends TestCase {
     Collector collector=null;
     // only enable this test if you have a local installation. Disable with
     // continous integration.
-    boolean enabled=true;
+    boolean enabled=false;
     public IntegrationTest2(String testName) {
         super(testName);
     }
@@ -54,8 +54,8 @@ public class IntegrationTest2 extends TestCase {
         try {
             ItemResource_JerseyClient restClient=new ItemResource_JerseyClient("localhost.localdomain");
             restClient.putText("es.tid.customers.cc1.services.monitoring.vees.collector.replicas.3");
-            collector.write("collector", "net", null, "if_packets", null, dataSources, values, 
-                         now.getTime());
+            collector.write("localhost.localdomain", "net", null, "if_packets", null, dataSources, values, 
+                         now);
             
             assert(true);
         } catch (Exception ex) {

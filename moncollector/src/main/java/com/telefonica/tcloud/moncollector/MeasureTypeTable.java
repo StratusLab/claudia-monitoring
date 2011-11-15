@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class MeasureTypeTable {
     private final static String measuresTypeDir=
-        "/opt/collectd/share/collectd/measures.d";
+        "/opt/monitoring/share/measures.d";
     private HashMap<String,MeasureType> table;
     private HashMap<String,ArrayList<MeasureType>> tableByType;
     

@@ -19,7 +19,7 @@ class WebServerThread extends Thread {
     private Server server = null;
     private boolean shutdown = false;
     public static final String warPath=
-           "/opt/monitoring/shared/registerfqn4monitoring_ws-1.0-SNAPSHOT.war";
+           "/opt/monitoring/share/registerfqn4monitoring_ws-1.0-SNAPSHOT.war";
     public static final String warContext="/registerfqn4monitoring_ws";
     public WebServerThread(int port)  {
         server = new Server(port);

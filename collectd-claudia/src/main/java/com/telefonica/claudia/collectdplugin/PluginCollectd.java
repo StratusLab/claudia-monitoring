@@ -8,6 +8,7 @@ import com.telefonica.tcloud.collectorexternalinterface.CollectorI;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,10 +34,10 @@ public class PluginCollectd implements CollectdConfigInterface,
     private CollectorI collector=null;
     private HashMap<String,String[]> dataSourcesByType=
             new HashMap<String,String[]>();
-    
+    private Logger logger=null;
     @SuppressWarnings("LeakingThisInConstructor")
     public PluginCollectd() throws IOException {
-        
+        logger=Logger.getLogger("monitoring.PluginCollectd");
         Collectd.registerConfig("collector", this);
         Collectd.registerFlush("collector", this);
         Collectd.registerShutdown("collector", this);
@@ -72,6 +73,7 @@ public class PluginCollectd implements CollectdConfigInterface,
                         CollectorI.class).newInstance();
             }
             collector.autoInjectDependencies(collectorConfig);
+            logger.fine("MonCollector has been configured.");
             Collectd.registerWrite("collector",this);
             return 0;
         } catch (InstantiationException ex) {
@@ -103,11 +105,16 @@ public class PluginCollectd implements CollectdConfigInterface,
            dataSourcesByType.put(vl.getType(), dataSources);
         }
         try {
+            Date timestamp=new Date(vl.getTime());
+            logger.log(Level.FINEST, "Received {0};{1}_{2};{3}_{4} (Thread id:{5})",
+                    new Object[]{timestamp, vl.getPlugin(), vl.getPluginInstance(),
+                        vl.getType(), vl.getTypeInstance(),Thread.currentThread().getId()});
             collector.write(vl.getHost(), vl.getPlugin(), vl.getPluginInstance(), 
                     vl.getType(), vl.getTypeInstance(), dataSources, vl.getValues(),
-                    vl.getTime());
+                    timestamp);
+            logger.log(Level.FINEST, "Sended (Thread Id: {0})", Thread.currentThread().getId());
         } catch (Exception ex) {
-            Logger.getLogger(PluginCollectd.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, "collector throw an exception:", ex);
         }
         return 0;
     }

@@ -66,7 +66,7 @@ public class BasicTest extends TestCase {
        
        try {
             collector.write("acme$tid$s1$vee1$1", "net", null, "if_packages", null, dataSources, values, 
-                    now.getTime());
+                    now);
 
             assertTrue(
               publisher.getPublishedData().contains(
