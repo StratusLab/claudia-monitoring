@@ -1,3 +1,0 @@
-#cpu-idle.value:cpuIdle:jiffies
-#cpu-nice.value:cpuNice:jiffies
-#cpu-wait.value:cpuWait:jiffies

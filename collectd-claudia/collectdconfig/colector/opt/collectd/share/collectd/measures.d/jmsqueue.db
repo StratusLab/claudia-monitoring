@@ -1,4 +1,0 @@
-jmsqueue_rates.rx:jmsQueueReceiveRate:requests
-jmsqueue_rates.tx:jmsQueueDelireveRate:messages
-jmsqueue_pendings.requests:jmsQueuePendingRequests:requests
-jmsqueue_pendings.messages:jmsQueuePendingMessages:messages

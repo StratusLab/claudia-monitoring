@@ -1,7 +1,0 @@
-total_time_in_ms-jonasweb.value:Jonas_cpuTimeWeb:ms
-total_time_in_ms-jonas.value:Jonas_cpuTimeTotal:ms
-total_time_in_ms-jonasjbs.value:Jonas_cpuTimeEJB:ms
-total_time_in_ms-jonasstateless.value:Jonas_cpuTimeStateless:ms
-total_request-jonasweb.value:Jonas_requestsWeb:calls
-total_request-jonasweb.value:Jonas_requestsWeb:calls
-total_request-jonasweb.value:Jonas_requestsWeb:calls
