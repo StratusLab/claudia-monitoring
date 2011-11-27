@@ -18,7 +18,7 @@
 		<dependency> 
 			<groupId>org.collectd</groupId> 
 			<artifactId>collectd-api</artifactId> 
-			<version>5.0.0</version>
+			<version>5.0.0-SNAPSHOT</version>
 			<type>jar</type> 
 		</dependency> 
 	</dependencies>
@@ -50,7 +50,7 @@
 							<artifactItem> 
 								<groupId>org.collectd</groupId> 
 								<artifactId>collectd-api</artifactId> 
-								<version>5.0.0</version> 
+								<version>5.0.0-SNAPSHOT</version> 
 								<type>jar</type> 
 							</artifactItem> 
 						</artifactItems> 
@@ -93,7 +93,7 @@
 							<groupname>root</groupname>
 							<sources>
 								<source>
-									<location>target/dependency/collectd-api-5.0.0.jar</location>
+									<location>target/dependency/</location>
 								</source>
 							</sources>
 						</mapping>
