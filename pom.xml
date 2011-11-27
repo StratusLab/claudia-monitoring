@@ -16,7 +16,11 @@
       <artifactId>collectd-api</artifactId>
       <version>5.0.0</version>
     </dependency> 
-
+   <dependency>
+      <groupId>com.telefonica.tcloud</groupId>
+      <artifactId>collectorexternalinterface</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>collectorinterfaces</artifactId>
@@ -277,10 +281,12 @@
       <module>collectorexternalinterface</module>
       <module>moncollector</module>
       <module>collectd-api</module>
-      <module>collectd-claudia</module>
       <module>collectdprotocol</module>
+      <module>collectd-claudia</module>
       <module>collectd-api-rpm</module>
-      <module>collectd-collector-rpm</module>
       <module>collectd-extendedprobes-rpm</module>
+      <module>collectd-collector-rpm</module>
+<!--
+-->
   </modules>
 </project>

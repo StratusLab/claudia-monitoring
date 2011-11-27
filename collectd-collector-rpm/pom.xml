@@ -6,9 +6,7 @@
 	<artifactId>collectd-collector-rpm</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<name>collectd collector rpm package</name>
-	<!--
 	<packaging>rpm</packaging> 
-	-->
 	
 	<parent> 
 		<groupId>com.telefonica.tcloud</groupId> 
@@ -22,8 +20,6 @@
 		<groupId>com.telefonica.tcloud</groupId> 
 		<artifactId>db_collectd2fqn</artifactId> 
 		<version>1.0-SNAPSHOT</version>
-		<!--
-		-->
 	</dependency>
 	<dependency> 
 		<groupId>com.telefonica.tcloud</groupId>
@@ -83,7 +79,7 @@
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-dependency-plugin</artifactId> 
 			
-			<executions><!-- krt por aqui... --> 
+			<executions>
 
                         <execution>
 				<id>copy-dependencies</id> 
@@ -110,6 +106,12 @@
 						<version>1.0-SNAPSHOT</version> 
 						<classifier>jar-with-dependencies</classifier>
 						<type>jar</type> 
+					</artifactItem> 
+					<artifactItem> 
+	                                         <groupId>com.telefonica.tcloud</groupId> 
+						 <artifactId>registerfqn4monitoring_ws</artifactId>
+						 <type>war</type>
+						 <version>1.0-SNAPSHOT</version>
 					</artifactItem> 
 					<artifactItem> 
 						<groupId>com.telefonica.tcloud</groupId> 
