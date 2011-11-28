@@ -3,15 +3,18 @@
 test_system() {
    perl "-MExtUtils::Command::MM" .
    res=$?
-   [ $res != 0 ] && echo "Instale perl-ExtUtils-MakeMaker" && return 1
+   [ $res != 0 ] && echo "Instale perl-ExtUtils-MakeMaker" 
+#&& return 1
    echo "Encontrado perl Command:MM"
    type rpmbuild > /dev/null
    res=$?
-   [ $res != 0 ] && return 1
+   [ $res != 0 ] && echo "No tiene RPMBUILD instalado. Instale antes de nada"
+#&& return 1
    echo "Encontrado rpmbuild"
    gcc --version > /dev/null
    res=$?
-   [ $res != 0 ] && return 1
+   [ $res != 0 ]  && echo "NO tiene instalado GCC. Es necesario"
+#&& return 1
    echo "Encontrado gcc"
    echo "..... podemos continuar"
    return 0
