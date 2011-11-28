@@ -265,6 +265,11 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>1.2</version>
+				</plugin> 
+				<plugin> 
+					<groupId>org.codehaus.mojo</groupId> 
+					<artifactId>exec-maven-plugin</artifactId> 
+					<version>1.2.1</version> 
 				</plugin>
 
 			</plugins>
@@ -291,6 +296,7 @@
       <module>collectd-api-rpm</module>
       <module>collectd-extendedprobes-rpm</module>
       <module>collectd-collector-rpm</module>
+      <module>collectd-rpm-maven</module>
 <!--
 -->
   </modules>
