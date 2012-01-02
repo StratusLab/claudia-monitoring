@@ -144,7 +144,7 @@ EOF
 
 %build
 test -n "$JAVA_HOME" || export JAVA_HOME=/usr/java/jdk1.6.0_27
-./configure --with-python=/usr/bin/python2.6 --with-java=$JAVA_HOME
+./configure --with-python=/usr/bin/python --with-java=$JAVA_HOME
 make %{?_smp_mflags}
 
 %install
