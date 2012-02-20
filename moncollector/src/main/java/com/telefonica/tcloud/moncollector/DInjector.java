@@ -52,6 +52,8 @@ public class DInjector {
         String hostFilterName=properties.getProperty("hostfilter.path");
         String publisher=properties.getProperty("publisher.class");
         String persistence=properties.getProperty("persistence.class");
+        String persistenceMapping=properties.getProperty(
+                "persistence_mappings.class");
         String conversor=properties.getProperty("conversor2fqn.class");
         String measuresTypesDir=properties.getProperty("measuretypes.path");
         
@@ -85,7 +87,15 @@ public class DInjector {
             URL jarURLs[]=jarList2URLs(modules,conversorJars);
             CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
                     conversor, jarURLs, properties);
-            map.setMonPersistence(monPersistence);
+            if (persistenceMapping!=null) {
+                String persistenceJars=properties.getProperty(
+                        "persistence_mappings.jars");
+                URL jarURLsPersis[]=jarList2URLs(modules,persistenceJars);
+                map.setMonPersistence(MonPersistenceFactory.getPersistence(
+                        persistenceMapping, jarURLsPersis, properties));
+ 
+            } else 
+                map.setMonPersistence(monPersistence);
             collector.setConversor2FQN(map);
                     
         } else collector.setConversor2FQN(null);
