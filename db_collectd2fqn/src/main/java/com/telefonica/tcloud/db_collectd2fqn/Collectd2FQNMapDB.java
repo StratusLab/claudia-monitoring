@@ -6,8 +6,8 @@ package com.telefonica.tcloud.db_collectd2fqn;
 
 
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
+import com.telefonica.tcloud.collectorinterfaces.KeyValueCache;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
-import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,8 +22,8 @@ import net.spy.memcached.MemcachedClient;
 public class Collectd2FQNMapDB implements CollectdName2FQNMap {
     private MemcachedClient memcachedClient=null;
     private MonPersistence monPersistence=null;
-    private WebServerThread webserver;
-    
+    private WebServerThread webserver=null;
+    private KeyValueCache keyValueCache=null;
     
     @Override
     public String collectd2FQN(String host, String plugin, String pluginInstance, String type, String typeInstance) {
@@ -70,6 +70,8 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
     public void shutdown()  {
         memcachedClient.shutdown();
         webserver.shutdown();
+        if (keyValueCache!=null)
+            keyValueCache.unref();
     }
      
     
@@ -95,5 +97,11 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
     @Override
     public void setMonPersistence(MonPersistence monPersistence) {
         this.monPersistence=monPersistence;
+    }
+
+    @Override
+    public void setKeyValueCache(KeyValueCache keyValueCache) {
+        this.keyValueCache=keyValueCache;
+        keyValueCache.ref();
     }
 }

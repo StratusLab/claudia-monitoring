@@ -9,8 +9,8 @@ package com.telefonica.tcloud.collectorinterfaces;
  * @author jomar
  */
 public interface KeyValueCache {
-    void put(String key,String value);
-    void putObject(String key,Object value);
-    String get(String key);
-    Object getObject(String key);
+    void putValue(String key,Object value);
+    Object getValue(String key);
+    void ref();
+    void unref();
 }

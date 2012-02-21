@@ -6,6 +6,8 @@ package com.telefonica.tcloud.moncollector;
 
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMapFactory;
+import com.telefonica.tcloud.collectorinterfaces.KeyValueCache;
+import com.telefonica.tcloud.collectorinterfaces.KeyValueCacheFactory;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistenceFactory;
 import com.telefonica.tcloud.collectorinterfaces.MonPublisher;
@@ -44,6 +46,7 @@ public class DInjector {
     public void inject(Properties properties,Collector collector) throws
             IOException  {
         MonPersistence monPersistence=null;
+        KeyValueCache keyValueCache=null;
                 
         
         String publishOnly=properties.getProperty("publishonly");
@@ -54,6 +57,7 @@ public class DInjector {
         String persistence=properties.getProperty("persistence.class");
         String conversor=properties.getProperty("conversor2fqn.class");
         String measuresTypesDir=properties.getProperty("measuretypes.path");
+        String keyValueCacheName=properties.getProperty("keyvaluecache.class");
         
         if (modules==null) modules=default_modules_path;
         
@@ -61,7 +65,17 @@ public class DInjector {
                 :null);
         collector.setMeasuresFilter(measuresFilterName!=null?
                 new MeasuresFilter(measuresFilterName):null);
-        
+        if (keyValueCacheName!=null) {
+            String jars=properties.getProperty("keyvaluecache.jars");
+            URL jarURLs[]=jarList2URLs(modules,jars);
+            
+            keyValueCache=KeyValueCacheFactory.getKeyValueCache(keyValueCacheName,
+                    jarURLs,properties);
+        } else {
+            
+            keyValueCache=new KeyValueCacheDefaultImpl(30000);
+            
+        }
         if (publisher!=null) {
             String publisherJars=properties.getProperty("publisher.jars");
             URL jarURLs[]=jarList2URLs(modules,publisherJars);
@@ -86,6 +100,7 @@ public class DInjector {
             CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
                     conversor, jarURLs, properties);
             map.setMonPersistence(monPersistence);
+            map.setKeyValueCache(keyValueCache);
             collector.setConversor2FQN(map);
                     
         } else collector.setConversor2FQN(null);

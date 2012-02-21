@@ -5,6 +5,7 @@
 package com.telefonica.tcloud.moncollector;
 
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
+import com.telefonica.tcloud.collectorinterfaces.KeyValueCache;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import java.util.Properties;
 
@@ -49,5 +50,10 @@ public class CollectdName2FQNDefaultImpl implements
      StringBuilder sbuilder=new StringBuilder(host);
      sbuilder.append('.').append(plugin).append('.').append(pluginInstance);
      return sbuilder.toString();
-   } 
+   }
+
+    @Override
+    public void setKeyValueCache(KeyValueCache keyValueCache) {
+        // not used.
+    }
 }

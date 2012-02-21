@@ -4,7 +4,6 @@
  */
 package com.telefonica.tcloud.collectorinterfaces;
 
-import java.util.LinkedHashMap;
 import java.util.Properties;
 
 
@@ -32,6 +31,8 @@ public interface CollectdName2FQNMap {
     public void setConfig(Properties config);    
     
     public void setMonPersistence(MonPersistence monPersistence);
+    
+    public void setKeyValueCache(KeyValueCache keyValueCache);
     
         /**
          * Method that translate from collectd name schema to fqn
