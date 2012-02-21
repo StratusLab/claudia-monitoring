@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.collectd.pkgs</groupId>
+	<artifactId>collectd-api-rpm</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>Collector Daemon API RPM Package</name>
+	<packaging>rpm</packaging>
+        
+	<parent> 
+		<groupId>com.telefonica.tcloud</groupId> 
+		<artifactId>basicmonitoring</artifactId> 
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<dependencies> 
+		<dependency> 
+			<groupId>org.collectd</groupId> 
+			<artifactId>collectd-api</artifactId> 
+			<version>5.0.0-SNAPSHOT</version>
+			<type>jar</type> 
+		</dependency> 
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin> 
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-resources-plugin</artifactId> 
+				<configuration> 
+				<encoding>UTF-8</encoding> 
+				</configuration> 
+			</plugin>
+
+			<plugin> 
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-dependency-plugin</artifactId> 
+				<extensions>true</extensions> 
+
+				<executions> 
+					<execution> 
+					<id>copy</id> 
+					<goals> 
+						<goal>copy</goal> 
+					</goals> 
+					<configuration> 
+						<artifactItems> 
+							<artifactItem> 
+								<groupId>org.collectd</groupId> 
+								<artifactId>collectd-api</artifactId> 
+								<version>5.0.0-SNAPSHOT</version> 
+								<type>jar</type> 
+							</artifactItem> 
+						</artifactItems> 
+					</configuration> 
+					</execution> 
+				</executions>
+			</plugin>
+
+			<plugin> 
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-deploy-plugin</artifactId> 
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<extensions>true</extensions>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>attached-rpm</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<copyright>2011, NoBody</copyright>
+					<group>Development</group>
+					<description>Maven Recipe: RPM Package.</description>
+
+					<release>${RELEASE}</release>
+					<prefix>/opt/collectd/lib</prefix>
+
+					<mappings>
+						<mapping>
+							<directory>/lib</directory>
+							<filemode>755</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>target/dependency/</location>
+								</source>
+							</sources>
+						</mapping>
+
+					</mappings>
+
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<opt.collectd.base>/opt/collectd</opt.collectd.base>
+    <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
+    <RELEASE>0.${maven.build.timestamp}</RELEASE>
+	</properties>
+
+</project>

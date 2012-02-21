@@ -7,6 +7,13 @@
 	<version>0.1.0-SNAPSHOT</version>
 	<name>collectd extended probes</name>
 	<packaging>rpm</packaging>
+        
+	<parent> 
+		<groupId>com.telefonica.tcloud</groupId> 
+		<artifactId>basicmonitoring</artifactId> 
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
 
 	<build>
 		<plugins>
