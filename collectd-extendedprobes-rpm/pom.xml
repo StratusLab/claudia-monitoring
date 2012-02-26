@@ -6,7 +6,7 @@
 	<artifactId>collectd-extendedprobes-rpm</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<name>collectd extended probes</name>
-	<packaging>rpm</packaging>
+	<packaging>pom</packaging>
         
 	<parent> 
 		<groupId>com.telefonica.tcloud</groupId> 
