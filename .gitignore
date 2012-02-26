@@ -24,3 +24,4 @@
 /support/collectd-rpm/BUILD/collectd-5.0.0/src/libcollectdclient/.libs/
 /support/collectd-rpm/BUILD/collectd-5.0.0/src/liboconfig/.libs/
 /support/collectd-rpm/BUILD/collectd-5.0.0/src/owniptc/.libs/
+*~

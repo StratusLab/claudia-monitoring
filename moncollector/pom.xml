@@ -50,11 +50,6 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>collectorinterfaces</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>collectorexternalinterface</artifactId>
       <version>${project.version}</version>
     </dependency>
