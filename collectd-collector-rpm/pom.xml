@@ -293,7 +293,7 @@
 					<groupname>root</groupname> 
 					<sources> 
 						<source> 
-						<location>target/dependency/registerfqn4monitoring_ws-1.0-SNAPSHOT.war</location> 
+						<location>target/dependency/registerfqn4monitoring_ws.war</location> 
 						</source> 
 					        <source>
 					        <location>${moncollector.base}/opt/monitoring/share</location>
