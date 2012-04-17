@@ -13,10 +13,10 @@ import junit.framework.TestCase;
  *
  * @author jomar
  */
-public class TestKeyValueCacheDefaultImpl extends TestCase {
+public class KeyValueCacheDefaultImplTest extends TestCase {
     
     KeyValueCache keyValue;
-    public TestKeyValueCacheDefaultImpl(String testName) {
+    public KeyValueCacheDefaultImplTest(String testName) {
         super(testName);
         
     }
@@ -44,15 +44,9 @@ public class TestKeyValueCacheDefaultImpl extends TestCase {
         keyValue.putValue("key1","value1");
         keyValue.putValue("key2","value2");
         keyValue.putValue("key3", "value3");
-        
-        if (keyValue.getValue("key1").equals("value1") &&
-            keyValue.getValue("key2").equals("value2") &&
-            keyValue.getValue("key3").equals("value3"))
-             assert(true);
-        else fail();
-        
-        
     }
+    
+    
     
     public void testFullCapacity() {
         
