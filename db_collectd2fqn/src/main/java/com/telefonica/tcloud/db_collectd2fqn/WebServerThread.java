@@ -19,7 +19,7 @@ class WebServerThread extends Thread {
     private Server server = null;
     private boolean shutdown = false;
     public static final String warPath=
-           "/opt/monitoring/share/registerfqn4monitoring_ws-1.0-SNAPSHOT.war";
+           "/opt/monitoring/share/registerfqn4monitoring_ws.war";
     public static final String warContext="/registerfqn4monitoring_ws";
     public WebServerThread(int port)  {
         server = new Server(port);
@@ -27,6 +27,7 @@ class WebServerThread extends Thread {
         WebAppContext webapp = new WebAppContext();
         webapp.setWar(warPath);
         webapp.setContextPath(warContext);
+        
         try {
             webapp.setClassLoader(new WebAppClassLoader(this.getClass().getClassLoader(),webapp));
         } catch (IOException ex) {
