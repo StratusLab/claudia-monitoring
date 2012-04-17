@@ -102,6 +102,7 @@ public class DInjector {
             CollectdName2FQNMap map=CollectdName2FQNMapFactory.getConversor(
                     conversor, jarURLs, properties);
             map.setKeyValueCache(keyValueCache);
+            keyValueCache.ref();
             if (persistenceMapping!=null) {
                 String persistenceJars=properties.getProperty(
                         "persistence_mappings.jars");
