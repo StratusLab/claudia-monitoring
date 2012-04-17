@@ -294,6 +294,7 @@
 
   <modules>
       <module>collectorinterfaces</module>
+      <module>memcached_keyvaluecache</module>
       <module>jdbc_monpersistence</module>
       <module>mysql_monpersistence</module>
       <module>postgresql_monpersistence</module>
@@ -310,5 +311,6 @@
 <!--
       <module>collectd-rpm-maven</module>
 -->
+    
   </modules>
 </project>
