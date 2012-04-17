@@ -2,8 +2,11 @@
 . $(dirname $0)/database.conf
 
 # required create user '${USER}@localhost' only if installed anonymous user
-# otherwise ${USER} (equivalent to ${USER}@%) is enougth.
-mysql <<EOF
+# otherwise ${USER} (equivalent to ${USER}@%) is enough.
+if test -n $MYSQLROOTPASSWORD ; then
+MYSQLROOTPASSWORD="-p$MYSQLROOTPASSWORD"
+fi
+mysql $MYSQLROOTPASSWORD <<EOF
 create database if not exists $DBNAME;
 create user '${USER}' identified by '$PASSWORD';
 create user '${USER}'@localhost identified by '$PASSWORD';
