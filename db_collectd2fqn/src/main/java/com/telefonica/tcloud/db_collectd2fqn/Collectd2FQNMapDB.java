@@ -9,18 +9,13 @@ import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
 import com.telefonica.tcloud.collectorinterfaces.KeyValueCache;
 import com.telefonica.tcloud.collectorinterfaces.MonPersistence;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.spy.memcached.AddrUtil;
-import net.spy.memcached.BinaryConnectionFactory;
-import net.spy.memcached.MemcachedClient;
+
 
 /**
  *
  * @author jomar
  */
 public class Collectd2FQNMapDB implements CollectdName2FQNMap {
-    private MemcachedClient memcachedClient=null;
     private MonPersistence monPersistence=null;
     private WebServerThread webserver=null;
     private KeyValueCache keyValueCache=null;
@@ -34,16 +29,16 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
                 String pluginc=plugin+"-"+pluginInstance;
                 String key="mon.fqn."+host+";"+pluginc; 
                 int length=pluginInstance.length();
-                Object fqnO=memcachedClient.get(key);
+                Object fqnO=keyValueCache.getValue(key);
                 if (fqnO!=null) return fqnO.toString();
                 fqn=monPersistence.searchFQN(host,pluginc);
                 if (fqn!=null)  
-                   memcachedClient.add(key, 36000, fqn);
+                   keyValueCache.putValue(key, fqn);
                 else {
                     fqn=monPersistence.searchFQN(host,null);
                     if (fqn!=null) { 
                        fqn=fqn+"."+plugin+"."+pluginInstance;
-                       memcachedClient.add(key, 36000, fqn);
+                       keyValueCache.putValue(key, fqn);
                     } 
                 }
             } catch (Exception ex) {
@@ -53,11 +48,11 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
         } else {
             try {
                 String key="mon.fqn."+host;
-                Object fqn0=memcachedClient.get(key);
+                Object fqn0=keyValueCache.getValue(key);
                 if (fqn0!=null) return fqn0.toString();
                 fqn=monPersistence.searchFQN(host,null);
                 if (fqn!=null)
-                  memcachedClient.add(key, 36000, fqn);
+                    keyValueCache.putValue(key,fqn);
             } catch (Exception ex) {
                 return null;
             }
@@ -68,7 +63,6 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
  
     @Override
     public void shutdown()  {
-        memcachedClient.shutdown();
         webserver.shutdown();
         if (keyValueCache!=null)
             keyValueCache.unref();
@@ -83,16 +77,6 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
       webserver.setDaemon(true);
       webserver.start();
 
-      try {
-            //space separated list of servers.
-            String servers=config.getProperty("memcachedservers");
-            if (servers==null) servers="localhost:11211";
-           
-            memcachedClient=new MemcachedClient(new BinaryConnectionFactory(),
-                                               AddrUtil.getAddresses(servers));
-      } catch (Exception ex) {
-            Logger.getLogger(Collectd2FQNMapDB.class.getName()).log(Level.SEVERE, null, ex);
-      }
     }
     @Override
     public void setMonPersistence(MonPersistence monPersistence) {
