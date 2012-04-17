@@ -36,8 +36,12 @@ public class PersistenceFacade  {
             config.load(new FileReader("/opt/monitoring/conf/monitoring.properties"));
             
             
-            String className=config.getProperty("persistence.class");
-            String jars=config.getProperty("persistence.jars");
+            String className=config.getProperty("persistence_mappings.class");
+            String jars=config.getProperty("persistence_mappings.jars");
+            if (className==null) 
+                 className=config.getProperty("persistence.class");
+            if (jars==null)
+                 jars=config.getProperty("persistence.jars");
             if (jars!=null) {
                 String dir=config.getProperty("modules.path");
                 URL urls[]=jarList2URLs(dir==null?default_modules_path:dir
