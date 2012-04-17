@@ -199,6 +199,10 @@
 						<location>target/dependency/mysql_monpersistence-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
 						<destination>mysql_monpersistence.jar</destination> 
 						</source> 
+						<source> 
+						<location>target/dependency/memcached_keyvaluecache-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
+						<destination>memcached_keyvaluecache.jar</destination> 
+						</source> 
 <!--
 						<source> 
 						<location>target/dependency/hbase_monpersistence-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
