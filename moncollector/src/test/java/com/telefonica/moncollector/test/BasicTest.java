@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.telefonica.tcloud.moncollector;
+package com.telefonica.moncollector.test;
 
 /*
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
@@ -15,6 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
  * 
  */
+import com.telefonica.moncollector.CollectdName2FQNDefaultImpl;
+import com.telefonica.moncollector.CollectdName2FQNDefaultImpl;
+import com.telefonica.moncollector.Collector;
+import com.telefonica.moncollector.Collector;
+import com.telefonica.moncollector.MeasureTypeTable;
+import com.telefonica.moncollector.MeasureTypeTable;
 import java.util.ArrayList;
 import java.util.Date;
 //import java.util.LinkedHashMap;

@@ -1,4 +1,4 @@
-package com.telefonica.tcloud.moncollector;
+package com.telefonica.moncollector;
 
 import com.telefonica.tcloud.collectorinterfaces.KeyValueCache;
 import com.telefonica.tcloud.collectorinterfaces.KeyValueCacheFactory;
@@ -17,7 +17,9 @@ public class KeyValueCacheDefaultImplFactory extends KeyValueCacheFactory {
     public final static int default_capacity=50000;
     @Override
     public KeyValueCache getKeyValueCache(Properties config) {
-        String capacity=config.getProperty("keyvaluecache.capacity");
+        String capacity=
+                config.getProperty("keyvaluecache.capacity");
+        
         return new KeyValueCacheDefaultImpl(capacity==null?default_capacity:
                 Integer.decode(capacity));
     }

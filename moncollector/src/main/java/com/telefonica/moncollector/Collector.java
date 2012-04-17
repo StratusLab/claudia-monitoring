@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.telefonica.tcloud.moncollector;
+package com.telefonica.moncollector;
 
 import com.telefonica.tcloud.collectorexternalinterface.CollectorI;
 import com.telefonica.tcloud.collectorinterfaces.CollectdName2FQNMap;
