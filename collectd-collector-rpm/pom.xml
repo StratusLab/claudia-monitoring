@@ -114,6 +114,13 @@
 						<classifier>jar-with-dependencies</classifier>
 						<type>jar</type> 
 					</artifactItem> 
+					<artifactItem> 
+					 	<groupId>com.telefonica.moncollector</groupId> 
+						<artifactId>memcached_keyvaluecache</artifactId> 
+						<version>1.0-SNAPSHOT</version> 
+						<classifier>jar-with-dependencies</classifier>
+						<type>jar</type> 
+					</artifactItem> 
 <!--
 					<artifactItem> 
 					 	<groupId>com.telefonica.tcloud</groupId> 
@@ -297,7 +304,8 @@
 					<groupname>root</groupname> 
 					<sources> 
 						<source> 
-						<location>target/dependency/registerfqn4monitoring_ws.war</location> 
+						<location>target/dependency/registerfqn4monitoring_ws-1.0-SNAPSHOT.war</location> 
+						<destination>registerfqn4monitoring_ws.war</destination> 
 						</source> 
 					        <source>
 					        <location>${moncollector.base}/opt/monitoring/share</location>
