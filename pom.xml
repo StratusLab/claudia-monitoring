@@ -305,7 +305,6 @@
       <module>collectd-api</module>
       <module>collectdprotocol</module>
       <module>collectd-claudia</module>
-      <module>collectd-api-rpm</module>
       <module>collectd-extendedprobes-rpm</module>
       <module>collectd-collector-rpm</module>
 <!--
