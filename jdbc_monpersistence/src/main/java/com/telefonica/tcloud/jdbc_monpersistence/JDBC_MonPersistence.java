@@ -106,6 +106,11 @@ public class JDBC_MonPersistence implements MonPersistence
         selectAssociatedId.setString(1, fqn);
         ResultSet result=selectAssociatedId.executeQuery();
         
+        if (!result.next()) {result.close(); return null; }
+        /* Old code: create entry automatically if exists fqn with the same
+         * preffix (all until .replica.number inclusive).
+         *
+        
         if (!result.next()) {
             // not found; if preffix is hostname, create entry, if error, 
             // ignore entry.
@@ -132,6 +137,8 @@ public class JDBC_MonPersistence implements MonPersistence
             if (!result.next()) {result.close(); return null; }
             
         } 
+        * 
+        */
         Long id=result.getLong(1);
         result.close();
         return id;

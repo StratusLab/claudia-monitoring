@@ -37,7 +37,10 @@ public class Collectd2FQNMapDB implements CollectdName2FQNMap {
                 else {
                     fqn=monPersistence.searchFQN(host,null);
                     if (fqn!=null) { 
-                       fqn=fqn+"."+plugin+"."+pluginInstance;
+                       // Old code, added plugin and pluginstance
+                       // automatically. This changed: if you need
+                       // pluginstance, create a mapping manually.
+                       //fqn=fqn+"."+plugin+"."+pluginInstance;
                        keyValueCache.putValue(key, fqn);
                     } 
                 }
