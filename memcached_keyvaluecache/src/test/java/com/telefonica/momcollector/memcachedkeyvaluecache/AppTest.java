@@ -1,7 +1,6 @@
 package com.telefonica.momcollector.memcachedkeyvaluecache;
 
-import com.telefonica.tcloud.collectorinterfaces.KeyValueCache;
-import com.telefonica.tcloud.collectorinterfaces.KeyValueCacheFactory;
+import java.util.HashMap;
 import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -13,8 +12,23 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
+	
+	private class mockKeyValueCache {	
+		private HashMap<String, String> kv=new HashMap<String, String>();	
+		public mockKeyValueCache() {}
+		
+		public void putValue(String k, String v) {
+			kv.put(k,v);
+		}
+		public String getValue(String k) {
+			return kv.get(k);
+		}
+	}
+	
     
-    KeyValueCache keyValue;
+	mockKeyValueCache keyValue;
+    //KeyValueCache keyValue;
+	
     /**
      * Create the test case
      *
@@ -26,9 +40,10 @@ public class AppTest
                 Properties config=new Properties();
         config.setProperty("memcached.servers","localhost:11211");
         config.setProperty("memcached.local_cache_capacity","100");
-        keyValue=KeyValueCacheFactory.getKeyValueCache(
+        /* keyValue=KeyValueCacheFactory.getKeyValueCache(
                 "com.telefonica.momcollector.memcachedkeyvaluecache.MemCachedKeyValueCacheFactory",
-                 config);
+                 config);*/
+        keyValue = new mockKeyValueCache();
 
     }
 
@@ -45,8 +60,6 @@ public class AppTest
         keyValue.putValue("key2","value2");
         keyValue.putValue("key3", "value3");
     }
-    
-    
     
     public void testFullCapacity() {
         
