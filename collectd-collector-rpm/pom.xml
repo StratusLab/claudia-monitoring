@@ -51,6 +51,10 @@
 		<groupId>com.telefonica.tcloud</groupId> 
 		<artifactId>moncollector</artifactId> 
 	</dependency>
+        <dependency>
+          <groupId>com.telefonica.moncollector</groupId> 
+          <artifactId>memcached_keyvaluecache</artifactId> 
+	</dependency>
 	<dependency> 
 		<groupId>org.apache.servicemix.bundles</groupId> 
 		<artifactId>org.apache.servicemix.bundles.spymemcached</artifactId> 
