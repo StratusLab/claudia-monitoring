@@ -10,7 +10,7 @@
 	<parent> 
 		<groupId>com.telefonica.tcloud</groupId> 
 		<artifactId>basicmonitoring</artifactId> 
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 
 

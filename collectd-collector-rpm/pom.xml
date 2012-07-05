@@ -10,7 +10,7 @@
 	<parent> 
 		<groupId>com.telefonica.tcloud</groupId> 
 		<artifactId>basicmonitoring</artifactId> 
-		<version>1.0-SNAPSHOT</version> 
+		<version>1.0</version> 
 	</parent>
 
 <!-- DEPENDENCIAS -->
@@ -33,7 +33,7 @@
 	<dependency> 
 		<groupId>org.collectd</groupId> 
 		<artifactId>collectd-api</artifactId>
-		<version>5.0.0-SNAPSHOT</version>
+		<version>5.0.0</version>
 	</dependency>
 	<dependency> 
 		<groupId>com.telefonica.tcloud</groupId> 
