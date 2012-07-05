@@ -127,7 +127,6 @@
 	                                         <groupId>com.telefonica.tcloud</groupId> 
 						 <artifactId>registerfqn4monitoring_ws</artifactId>
 						 <type>war</type>
-						 <version>1.0-SNAPSHOT</version>
 					</artifactItem> 
 					<artifactItem> 
 						<groupId>com.telefonica.tcloud</groupId> 
@@ -137,13 +136,11 @@
 					<artifactItem> 
 						<groupId>com.telefonica.tcloud</groupId> 
 						<artifactId>collectorinterfaces</artifactId> 
-						<version>1.0-SNAPSHOT</version>
 						<type>jar</type> 
 					</artifactItem> 
 					<artifactItem> 
 						<groupId>com.telefonica.tcloud</groupId> 
 						<artifactId>collectorexternalinterface</artifactId> 
-						<version>1.0-SNAPSHOT</version>
 						<type>jar</type> 
 					</artifactItem> 
 					<artifactItem> 
@@ -198,12 +195,12 @@
 						<destination>mysql_monpersistence.jar</destination> 
 						</source> 
 						<source> 
-						<location>target/dependency/memcached_keyvaluecache-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
+						<location>target/dependency/memcached_keyvaluecache-${project.version}-jar-with-dependencies.jar</location> 
 						<destination>memcached_keyvaluecache.jar</destination> 
 						</source> 
 <!--
 						<source> 
-						<location>target/dependency/hbase_monpersistence-1.0-SNAPSHOT-jar-with-dependencies.jar</location> 
+						<location>target/dependency/hbase_monpersistence-${project.version}-jar-with-dependencies.jar</location> 
 						<destination>hbase_monpersistence.jar</destination> 
 						</source> 
 -->
@@ -244,7 +241,7 @@
                                                 <destination>collectd-claudia.jar</destination>
 						</source> 
 						<source> 
-						<location>target/dependency/collectorexternalinterface-1.0-SNAPSHOT.jar</location> 
+						<location>target/dependency/collectorexternalinterface-${project.version}.jar</location> 
 						<destination>collectorexternalinterface.jar</destination>
 						</source> 
 					</sources>
@@ -283,7 +280,7 @@
 						<destination>moncollector.jar</destination>
 						</source> 
 						<source> 
-						<location>target/dependency/collectorinterfaces-1.0-SNAPSHOT.jar</location> 
+						<location>target/dependency/collectorinterfaces-${project.version}.jar</location> 
 						<destination>collectorinterfaces.jar</destination>
 						</source> 
 					</sources>
@@ -295,7 +292,7 @@
 					<groupname>root</groupname> 
 					<sources> 
 						<source> 
-						<location>target/dependency/registerfqn4monitoring_ws-1.0-SNAPSHOT.war</location> 
+						<location>target/dependency/registerfqn4monitoring_ws-${project.version}.war</location> 
 						<destination>registerfqn4monitoring_ws.war</destination> 
 						</source> 
 					        <source>
