@@ -79,16 +79,10 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>collectorinterfaces</artifactId>
-<!--
-            <version>${project.version}</version>
--->
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>mysql_monpersistence</artifactId>
-<!--
-            <version>${project.version}</version>
--->
         </dependency>
     </dependencies>
     <properties>
