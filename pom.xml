@@ -150,8 +150,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:git:ssh://apache@code.stratuslab.eu/ext/git/stratuslab-monitoring.git</connection>
-		<developerConnection>scm:git:ssh://apache@code.stratuslab.eu/ext/git/stratuslab-monitoring.git</developerConnection>
+		<connection>scm:git:ssh://git@github.com/StratusLab/monitoring.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/StratusLab/monitoring.git</developerConnection>
 	</scm>
  <distributionManagement>
     <repository>
