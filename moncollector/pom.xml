@@ -7,9 +7,7 @@
     <groupId>com.telefonica.tcloud</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>com.telefonica.tcloud</groupId>
   <artifactId>moncollector</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>moncollector</name>
   <url>http://maven.apache.org</url>
     <build>
