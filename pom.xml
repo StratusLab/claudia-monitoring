@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.telefonica.tcloud</groupId>
   <artifactId>basicmonitoring</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>basicmonitoring</name>
 
@@ -19,42 +19,42 @@
     <dependency>
       <groupId>org.collectd</groupId>
       <artifactId>collectd-api</artifactId>
-      <version>5.0.0</version>
+      <version>5.0.1-SNAPSHOT</version>
     </dependency> 
    <dependency>
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>collectorexternalinterface</artifactId>
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>collectorinterfaces</artifactId>
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency> 
     <dependency> 
       <groupId>com.telefonica.tcloud</groupId> 
       <artifactId>db_collectd2fqn</artifactId> 
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency> 
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>mysql_monpersistence</artifactId>
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency> 
       <groupId>com.telefonica.tcloud.collectd</groupId> 
       <artifactId>collectd-claudia</artifactId> 
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency> 
     <dependency>
       <groupId>com.telefonica.tcloud</groupId> 
       <artifactId>moncollector</artifactId> 
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.telefonica.moncollector</groupId> 
       <artifactId>memcached_keyvaluecache</artifactId> 
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.servicemix.bundles</groupId>
@@ -136,7 +136,7 @@
     <dependency>
       <groupId>com.telefonica.tcloud</groupId>
       <artifactId>registerfqn4monitoring_ws</artifactId>
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
