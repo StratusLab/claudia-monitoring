@@ -1,9 +1,9 @@
 Monitoring
 ==========
 
-** THIS CODE IS NO LONGER SUPPORTED OR DISTRIBUTED AS PART OF THE
+**THIS CODE IS NO LONGER SUPPORTED OR DISTRIBUTED AS PART OF THE
 STRATUSLAB PROJECT.  PLEASE CONTACT THE [4CaaSt
-PROJECT](http://4caast.morfeo-project.org/) **
+PROJECT](http://4caast.morfeo-project.org/)**
 
 Monitoring services for autoscaling capabilities of Claudia.
 
