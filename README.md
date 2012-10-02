@@ -3,7 +3,7 @@ Monitoring
 
 **THIS CODE IS NO LONGER SUPPORTED OR DISTRIBUTED AS PART OF THE
 STRATUSLAB PROJECT.  PLEASE CONTACT THE [4CaaSt
-PROJECT](http://4caast.morfeo-project.org/)** You can find the
+PROJECT](http://4caast.morfeo-project.org/)**. You can find the
 supported code in the [new
 repository](https://svn.forge.morfeo-project.org/4caast/trunk/WP5/tcloudmonitoringsytems).
 
